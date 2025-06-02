@@ -1,45 +1,49 @@
-# 🗓️ uniScheduler – University Planner & Admin Portal
+# 🎓 EduEnroll – University Course Registration System
 
-**uniScheduler** is a full-stack web application designed to streamline university scheduling, planning, and administration. It provides tools for students to manage their timetables and tasks, while giving administrators powerful features to oversee schedules, resources, and academic workflows.
+**EduEnroll** is a full-stack web application that allows university students to register for courses and enables administrators to manage those registrations, courses, and user roles. Inspired by platforms like KronoX, this app focuses on simplicity, usability, and meeting real-world academic planning needs.
 
 ---
 
 ## 🚀 Features
 
-### 🎓 Student Features
-- Personal timetable planner
-- Task and deadline tracking
-- Course registration overview
-- Notifications for upcoming events and changes
+### 👩‍🎓 Student Features
+- View and register for available courses
+- See registration status (pending/approved)
+- Browse course information and teacher details
+- Personalized course list per user
 
-### 🛠️ Admin Features
-- Manage course schedules
-- Allocate rooms and instructors
-- View and edit academic calendars
-- User role management (students, lecturers, admins)
+### 🧑‍💼 Admin Features
+- View student registrations and approve/reject them
+- Create, edit, or delete courses
+- See student statistics per course
+- Role-based dashboard with protected access
 
-### 🔧 General
-- User authentication & role-based access
-- Responsive, mobile-friendly UI
-- Dashboard with real-time updates
+---
+
+## 🔐 Authentication
+- Secure signup and login system (JWT-based)
+- Passwords are hashed using bcrypt
+- Role-based access control: `student`, `admin`
+- Protected routes and UI rendering per user type
 
 ---
 
 ## 🧱 Tech Stack
 
-| Layer           | Technology              |
-|----------------|--------------------------|
-| Frontend       | React / Next.js          |
-| Backend        | Node.js / Express        |
-| Database       | PostgreSQL / MongoDB     |
-| Auth           | JWT / OAuth              |
-| Hosting        | Vercel / Heroku / Render |
+| Layer       | Technology              |
+|-------------|--------------------------|
+| Frontend    | Vite + React             |
+| Styling     | Tailwind CSS / CSS       |
+| Backend     | Node.js + Express        |
+| Database    | PostgreSQL / MySQL       |
+| Auth        | JWT + bcrypt             |
+| Deployment  | Vercel (frontend), Render or Railway (backend + DB) |
 
 ---
 
-## 📦 Setup Instructions
+## 📦 Getting Started
 
-1. **Clone the repo**
-   ```bash
-   git clone https://github.com/yourusername/uniScheduler.git
-   cd uniScheduler
+### 1. Clone the repository
+```bash
+git clone https://github.com/MustafaQassmieh01/FullStackProject.git
+cd eduenroll
