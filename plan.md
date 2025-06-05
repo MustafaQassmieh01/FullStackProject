@@ -26,16 +26,16 @@ A web-based course registration system where students can register for courses a
 - *(Optional)* `Teacher` table or just a field in `Course`
 
 **Tasks:**
-- [ ] Plan ERD (Entity Relationship Diagram)
-- [ ] Define and create models (with Sequelize or Mongoose)
+- [x] Plan ERD (Entity Relationship Diagram)
+- [x] Define and create models (with Sequelize or Mongoose)
 
 ---
 
 ### 👤 PHASE 3: Authentication & Roles
 **Goal:** Implement secure login, signup, and user roles.
 
-- [ ] Create signup/login API (bcrypt + JWT)
-- [ ] Middleware for route protection (`auth`, `isStudent`, `isAdmin`)
+- [-] Create signup/login API (bcrypt + JWT)
+- [-] Middleware for route protection (`auth`, `isStudent`, `isAdmin`)
 - [ ] Store JWT on client-side and handle auto-login
 - [ ] Redirect/deny unauthorized routes
 

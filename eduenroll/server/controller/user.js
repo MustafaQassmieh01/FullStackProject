@@ -1,0 +1,213 @@
+
+
+/**
+ * User Controller
+ * This module handles user-related operations such as creating users, fetching user details, and updating user information.
+ * @module UserController
+ * @requires express
+ * 
+ */
+
+import User from "../models/user.js";
+import { handleMongooseError } from "../utils/errorHandler.js";
+import bcrypt from "bcrypt";
+
+
+const UserController = {
+    /** 
+     * Creates a new user in the database.
+     * @param {Object} req - The request object containing user details.
+     * @param {Object} res - The response object to send the result.
+     */
+    createUser: async (req, res) => {
+        try {
+            const {username, full_name, email, password} = req.body;
+            // Validate required fields
+            if (!username || !full_name || !email || !password) {
+                return res.status(400).json({
+                    success: false,
+                    message: "All fields are required"
+                });
+            }
+
+            // Check if user already exists
+            const existtingUserEmail = await User.findOne({email});
+            const existtingUserName = await User.findOne({username});
+            if (existtingUser) {
+                return res.status(409).json({
+                    success: false,
+                    message: 'User already exists with this email',
+                });
+            }
+            if (existtingUserName) {
+                return res.status(409).json({
+                    success: false,
+                    message: 'Username already exists',
+                });
+            }
+
+            const saltRounds = 10;
+            const hashedPassword = await bcrypt.hash(password, saltRounds);
+            const newUser = new User({
+                username,
+                full_name,
+                email,
+                hashed_password: hashedPassword
+            });
+            await newUser.save();
+            // for testing purposes remove this line in production
+
+
+            const userResponse = newUser.toObject();
+            delete userResponse.hashed_password; // Remove sensitive data
+
+            res.status(201).json({
+                success: true,
+                message: "User created successfully",
+                data: userResponse
+            });
+        }catch (error) {
+            handleMongooseError(error, res);
+        }
+    },
+
+    /**
+     * Get all users from the database.
+     * @param {Object} req - The request object.
+     * @param {Object} res - The response object to send the result.
+     */
+    getAllUsers: async (req, res) => {
+        try{
+            const users = await User.find({}, {hashed_password:0}); // Exclude hashed_password from the response
+            res.status(200).json({
+                success: true,
+                data: users
+            });
+        }catch (error) {
+            handleMongooseError(error, res);
+        }
+    },
+
+    /**
+     * Get a user by ID.
+     * @param {Object} req - The request object containing the user ID.
+     * @param {Object} res - The response object to send the result.
+     */
+    getUserById: async (req, res) => {
+        try {
+            const userId = req.params.id;
+            const user = await User.findById(userId, {hashed_password: 0}); // Exclude hashed_password from the response
+            if (!user) {
+                return res.status(404).json({
+                    success: false,
+                    message: "User not found"
+                });
+            }
+            res.status(200).json({
+                success: true,
+                data: user
+            });
+        } catch (error) {
+            handleMongooseError(error, res);
+        }
+    },
+    /**
+     * Update a user by username
+     * @param {Object} req - The request object containing the user ID and updated data.
+     * @param {Object} res - The response object to send the result.
+     */
+    updateUser: async (req, res) => {
+        try{
+            const { username } = req.params;
+            const updates = req.body;
+            if (updates.password || updates.username){
+                return res.status(403).json({
+                    success: false,
+                    message: "Password and username cannot be updated via this endpoint"
+                });
+            }
+            const updatedUser = await User.findByIdAndUpdate({username:username}, updates,{new:true, runValidators: true});
+            if (!updatedUser) {
+                return res.status(404).json({
+                    success: false,
+                    message: "User not found"
+                });
+            }
+
+            res.status(200).json({
+                success: true,
+                data: updatedUser
+            });
+
+        }catch (error) {
+            handleMongooseError(error, res);
+        }
+    },
+    /**
+     * Delete a user by ID.
+     * @param {Object} req - The request object containing the user ID.
+     * @param {Object} res - The response object to send the result.
+     */
+    deleteUser: async (req, res) => {
+        try{
+            const username = req.params.username;
+            const deletedUser = await User.findOneAndDelete({username: username});
+            if (!deletedUser) {
+                return res.status(404).json({
+                    success: false,
+                    message: "User not found"
+                });
+            }
+            res.status(200).json({
+                success: true,
+                message: "User deleted successfully"
+            });
+        }catch (error) {
+            handleMongooseError(error, res);
+        }
+    },
+    /** 
+     *Authenticate a user by username and password.
+     * @param {Object} req - The request object containing username and password.
+     * @param {Object} res - The response object to send the result. 
+    */
+   login: async(req, res) => {
+        try{
+            const{ username, password } = req.body;
+            if (!username || !password) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Username and password are required"
+                });
+            }
+            const user = await User.findOne({username});
+
+            if(!user) {
+                return res.status(401).json({
+                    success: false,
+                    message: "User not found"
+                });
+            }
+            const isMatch = await bcrypt.compare(password, user.hashed_password);
+
+            if (!isMatch) {
+                return res.status(401).json({
+                    success: false,
+                    message: "Invalid password"
+                }); 
+            }
+
+            // generate a token (for simplicity, not implemented here)
+            const userResponse = user.toObject();
+            delete userResponse.hashed_password; // Remove sensitive data
+            res.status(200).json({
+                success: true,
+                message: "Login successful",
+                data: userResponse
+            });
+        }catch (error) {
+            handleMongooseError(error, res);
+        }
+    }    
+};
+export default UserController;
