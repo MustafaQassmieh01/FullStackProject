@@ -104,11 +104,9 @@ const RegistrationController = {
     },
 
     /**
-     * 
+     * Fetches all registrations for a specific course.
      * @param {String} req - the request object containing course code
      * @param {JSON} res - tkhe response object to send all registrations for the course
-     * @returns {response} - the response object containing code and message
-     * @description Fetches registrations for a specific course. should be used by the admin
      */
     getCourseRegistrations: async (req, res) => {
         try {
@@ -147,8 +145,8 @@ const RegistrationController = {
         try {
             const { id } = req.params;
             const updates = req.body;
-
             const updatedRegistration = await Registration.findByIdAndUpdate(id, updates, { new: true });
+            
             if (!updatedRegistration) {
                 return res.status(404).json({
                     success: false,
@@ -228,7 +226,6 @@ const RegistrationController = {
             return handleMongooseError(error, res);
         }
     }
+};
 
-
-
-}
+export default RegistrationController;

@@ -11,9 +11,12 @@
 import User from "../models/user.js";
 import { handleMongooseError } from "../utils/errorHandler.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import tokenControl from "./auth.js";
 
 
 const UserController = {
+
     /** 
      * Creates a new user in the database.
      * @param {Object} req - The request object containing user details.
@@ -111,6 +114,7 @@ const UserController = {
             handleMongooseError(error, res);
         }
     },
+
     /**
      * Update a user by username
      * @param {Object} req - The request object containing the user ID and updated data.
@@ -143,6 +147,7 @@ const UserController = {
             handleMongooseError(error, res);
         }
     },
+
     /**
      * Delete a user by ID.
      * @param {Object} req - The request object containing the user ID.
@@ -166,6 +171,7 @@ const UserController = {
             handleMongooseError(error, res);
         }
     },
+
     /** 
      *Authenticate a user by username and password.
      * @param {Object} req - The request object containing username and password.
@@ -198,16 +204,29 @@ const UserController = {
             }
 
             // generate a token (for simplicity, not implemented here)
+            // const token = jwt.sign({ id: user._id, username: user.username, admin:user.admin }, process.env.JWT_SECRET); // add expiration time in production
+            const Access =tokenControl.generateAccessToken(user)
+            const refresh = tokenControl.generateRefreshToken(user);
+
+
             const userResponse = user.toObject();
             delete userResponse.hashed_password; // Remove sensitive data
-            res.status(200).json({
+            res.cookie("refreshToken", refresh, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+                sameSite: 'strict', // Prevent CSRF attacks
+                maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+                path: '/api/eduenroll/login' // Set path to restrict cookie to this endpoint
+            }).status(200).json({
                 success: true,
                 message: "Login successful",
-                data: userResponse
+                data: userResponse,
+                accessToken: Access
             });
         }catch (error) {
             handleMongooseError(error, res);
         }
     }    
 };
+
 export default UserController;

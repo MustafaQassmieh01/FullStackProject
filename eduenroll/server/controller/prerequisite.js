@@ -7,6 +7,7 @@
 import Prerequisite from "../models/prerequisite.js";
 import { handleMongooseError } from "../utils/errorHandler.js";
 import Course from "../models/course.js";
+import { get } from "mongoose";
 const PrerequisiteController = {
 
     /**
@@ -105,6 +106,42 @@ const PrerequisiteController = {
             return handleMongooseError(error, res);
         }
     },
+
+    /**
+     * Get a prerequisite by ID.
+     * @param {Object} req - The request object containing the prerequisite ID.
+     * @param {Object} res - The response object to send the result.
+     */
+    getPrerequisiteById: async (req, res) => {
+        try {
+            const { id } = req.params;
+
+            // Validate required fields
+            if (!id) {
+                return res.status(400).json({
+                    success: false,
+                    message: "ID is required"
+                });
+            }
+
+            // Check if the prerequisite exists
+            const prerequisite = await Prerequisite.findById(id);
+            if (!prerequisite) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Prerequisite not found"
+                });
+            }
+
+            return res.status(200).json({
+                success: true,
+                data: prerequisite
+            });
+        } catch (error) {
+            return handleMongooseError(error, res);
+        }
+    },
+
     /**
      * Deletes a prerequisite.
      * @param {Object} req - The request object containing the prerequisite ID.
@@ -140,5 +177,41 @@ const PrerequisiteController = {
         } catch (error) {
             return handleMongooseError(error, res);
         }
+    },
+
+    /**
+     * Fetches prerequisites for a specific course.
+     * @param {Object} req - The request object containing course code.
+     * @param {Object} res - The response object to send the result.
+     */
+    getCoursePrerequisites: async (req, res) => {
+        try {
+            const { course_code } = req.params;
+
+            // Validate required fields
+            if (!course_code) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Course code is required"
+                });
+            }
+
+            // Fetch prerequisites for the course
+            const prerequisites = await Prerequisite.find({ course_code });
+            if (prerequisites.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: "No prerequisites found for this course"
+                });
+            }
+
+            return res.status(200).json({
+                success: true,
+                data: prerequisites
+            });
+        } catch (error) {
+            return handleMongooseError(error, res);
+        }
     }
 };
+export default PrerequisiteController;
