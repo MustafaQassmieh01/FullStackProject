@@ -1,11 +1,8 @@
-
-
 /**
  * User Controller
  * This module handles user-related operations such as creating users, fetching user details, and updating user information.
  * @module UserController
  * @requires express
- * 
  */
 
 import User from "../models/user.js";
