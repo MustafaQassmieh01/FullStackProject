@@ -1,7 +1,7 @@
-import CourseController from "./course";
-import RegistrationController from "./registration";
-import PrerequisiteController from "./prerequisite";
-import UserController from "./user";
+import CourseController from "./course.js";
+import RegistrationController from "./registration.js";
+import PrerequisiteController from "./prerequisite.js";
+import UserController from "./user.js";
 
 const Controller = {
     createCourse: CourseController.createCourse,

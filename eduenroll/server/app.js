@@ -2,13 +2,14 @@ import dotenv from 'dotenv';
 import express from 'express';
 import logger from 'morgan';
 import cors from 'cors';
-import {router} from './routes/mainRouter.js';
-import connection from './connect/connection.js';
+import router from './api/routes/mainRouter.js';
+import connection from './config/connection.js';
 
 
 export const app = express();
 
-dotenv.config({ path: './server/.env' });
+
+dotenv.config({ path: './.env' });
 console.log(process.env.URL);
 console.log(process.env.PORT);
 app.use(cors({
@@ -18,7 +19,7 @@ app.use(cors({
 
 connection();
 app.use(express.json());
-app.use('/', router);
+app.use('/eduenroll/api', router);
 app.use(logger('dev', { immediate: true }));
 const port = process.env.PORT;
 

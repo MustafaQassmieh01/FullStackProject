@@ -6,7 +6,7 @@
     capacity: { type: Number, required: true },
  */
 import Course from "../models/course.js";
-import { handleMongooseError } from "../utils/errorHandler.js";
+import { handleMongooseError } from "../../utils/errorHandler.js";
 const CourseController = {
 
     /**

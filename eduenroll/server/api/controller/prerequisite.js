@@ -5,7 +5,7 @@
  */
 
 import Prerequisite from "../models/prerequisite.js";
-import { handleMongooseError } from "../utils/errorHandler.js";
+import { handleMongooseError } from "../../utils/errorHandler.js";
 import Course from "../models/course.js";
 import { get } from "mongoose";
 const PrerequisiteController = {

@@ -12,6 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.14.0"
+    "jwt-decode": "^4.0.0",
+    "mongoose": "^8.14.0",
+    "morgan": "^1.10.0"
   }
 }

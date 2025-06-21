@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import jwtDecode from 'jwt-decode';
+import {jwtDecode }from 'jwt-decode';
 const tokenControl = {
     authenticate:(adminRequired= false) =>
         {
@@ -48,6 +48,7 @@ const tokenControl = {
     }
 
 }
+export default tokenControl;
 /**
  * first log in with username and password to get refresh token
  * then use the refresh token to get access token

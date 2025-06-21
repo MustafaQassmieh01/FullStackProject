@@ -13,7 +13,7 @@
  */
 
 import Registration from "../models/registration.js";
-import { handleMongooseError } from "../utils/errorHandler.js";
+import { handleMongooseError } from "../../utils/errorHandler.js";
 
 const RegistrationController = {
 
