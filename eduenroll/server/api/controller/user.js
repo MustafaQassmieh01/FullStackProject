@@ -21,9 +21,13 @@ const UserController = {
      */
     createUser: async (req, res) => {
         try {
-            const {username, full_name, email, password} = req.body;
+            const {username,
+                name,
+                email,
+                password,
+                admin=false} = req.body;
             // Validate required fields
-            if (!username || !full_name || !email || !password) {
+            if (!username ||  !name || !email || !password) {
                 return res.status(400).json({
                     success: false,
                     message: "All fields are required"
@@ -33,7 +37,7 @@ const UserController = {
             // Check if user already exists
             const existtingUserEmail = await User.findOne({email});
             const existtingUserName = await User.findOne({username});
-            if (existtingUser) {
+            if (existtingUserEmail) {
                 return res.status(409).json({
                     success: false,
                     message: 'User already exists with this email',
@@ -50,9 +54,10 @@ const UserController = {
             const hashedPassword = await bcrypt.hash(password, saltRounds);
             const newUser = new User({
                 username,
-                full_name,
+                name,
                 email,
-                hashed_password: hashedPassword
+                password_hash: hashedPassword,
+                admin: admin
             });
             await newUser.save();
             // for testing purposes remove this line in production
@@ -191,23 +196,29 @@ const UserController = {
                     message: "User not found"
                 });
             }
-            const isMatch = await bcrypt.compare(password, user.hashed_password);
-
+            const isMatch = await bcrypt.compare(password, user.password_hash);
+        
             if (!isMatch) {
                 return res.status(401).json({
                     success: false,
                     message: "Invalid password"
                 }); 
             }
+            const userCard = {
+                username: user.username,
+                name: user.name,
+                email: user.email,
+                admin: user.admin
+            };
 
             // generate a token (for simplicity, not implemented here)
             // const token = jwt.sign({ id: user._id, username: user.username, admin:user.admin }, process.env.JWT_SECRET); // add expiration time in production
-            const Access =tokenControl.generateAccessToken(user)
-            const refresh = tokenControl.generateRefreshToken(user);
+            const Access =tokenControl.generateAccessToken(userCard)
+            const refresh = tokenControl.generateRefreshToken(userCard);
 
 
             const userResponse = user.toObject();
-            delete userResponse.hashed_password; // Remove sensitive data
+            delete userResponse.password_hash; // Remove sensitive data
             res.cookie("refreshToken", refresh, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production', // Use secure cookies in production

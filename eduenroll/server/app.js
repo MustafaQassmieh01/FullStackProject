@@ -12,10 +12,6 @@ export const app = express();
 dotenv.config({ path: './.env' });
 console.log(process.env.URL);
 console.log(process.env.PORT);
-app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true // only if you're sending cookies/auth headers
-}));
 
 connection();
 app.use(express.json());

@@ -16,10 +16,14 @@ const CourseController = {
      */
     createCourse: async (req, res) => {
         try {
-            const { code, title, description, teacher_id, capacity } = req.body;
+            const { code,
+                title,
+                description = "",
+                teacher_id,
+                capacity } = req.body;
 
             // Validate required fields
-            if (!code || !title || !description || !teacher_id || !capacity) {
+            if (!code || !title || !teacher_id || !capacity) {
                 return res.status(400).json({
                     success: false,
                     message: "All fields are required"

@@ -22,6 +22,9 @@ const Controller = {
     createUser: UserController.createUser,
     getUserById: UserController.getUserById,
     updateUser: UserController.updateUser,
-    deleteUser: UserController.deleteUser
+    deleteUser: UserController.deleteUser,
+    loginUser: UserController.login,
+    getAllUsers: UserController.getAllUsers
+
 }
 export default Controller;

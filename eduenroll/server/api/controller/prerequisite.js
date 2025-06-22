@@ -17,10 +17,10 @@ const PrerequisiteController = {
      */
     createPrerequisite: async (req, res) => {
         try {
-            const { course_code, prerequisite_course_code } = req.body;
+            const { course_code, prerequisite_code } = req.body;
 
             // Validate required fields
-            if (!course_code || !prerequisite_course_code) {
+            if (!course_code || !prerequisite_code) {
                 return res.status(400).json({
                     success: false,
                     message: "All fields are required"
@@ -38,7 +38,7 @@ const PrerequisiteController = {
 
             const newPrerequisite = new Prerequisite({
                 course_code,
-                prerequisite_course_code
+                prerequisite_code
             });
 
             await newPrerequisite.save();

@@ -24,11 +24,11 @@ const RegistrationController = {
      */
     createRegistration: async (req, res) => {
         try {
-            const { user_id, course_code, status } = req.body;
+            const { username, course_code, status } = req.body;
             const count = await Registration.countDocuments();
             const registration_id = `reg_${course_code}-${count + 1}`; // Generate a unique registration ID
             // Validate required fields
-            if (!registration_id || !user_id || !course_code) {
+            if (!registration_id || !username|| !course_code) {
                 return res.status(400).json({
                     success: false,
                     message: "All fields are required"

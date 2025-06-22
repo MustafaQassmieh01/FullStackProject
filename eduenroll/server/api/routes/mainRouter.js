@@ -6,6 +6,8 @@ const router = express.Router();
 
 // User Routes
 router.post('/users', Controller.createUser); // Public - sign up
+router.post('/users/login', Controller.loginUser); // Public - login
+router.get('/users', tokenControl.authenticate(true), Controller.getAllUsers); // Admin only
 router.get('/users/:id', tokenControl.authenticate(), Controller.getUserById); // Authenticated
 router.put('/users/:id', tokenControl.authenticate(), Controller.updateUser); // Authenticated
 router.delete('/users/:id', tokenControl.authenticate(true), Controller.deleteUser); // Admin only
