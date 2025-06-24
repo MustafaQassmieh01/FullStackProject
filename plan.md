@@ -10,9 +10,9 @@ A web-based course registration system where students can register for courses a
 **Goal:** Adapt the existing full stack base into the new project structure.
 
 - [x] Copy assets, components, and backend into Vite app
-- [ ] Rename links, variables, `.env` keys to match project context
-- [ ] Verify frontend-backend communication (CORS, fetch/axios)
-- [ ] Remove old/unused logic and code
+- [x] Rename links, variables, `.env` keys to match project context
+- [x] Verify frontend-backend communication (CORS, fetch/axios)
+- [x] Remove old/unused logic and code
 
 ---
 
@@ -35,7 +35,7 @@ A web-based course registration system where students can register for courses a
 **Goal:** Implement secure login, signup, and user roles.
 
 - [x] Create signup/login API (bcrypt + JWT)
-- [-] Middleware for route protection (`auth`, `isStudent`, `isAdmin`)
+- [x] Middleware for route protection (`auth`, `isAdmin`)
 - [x] Store JWT on client-side and handle auto-login
 - [ ] Redirect/deny unauthorized routes
 

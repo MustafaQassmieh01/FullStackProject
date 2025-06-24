@@ -2,9 +2,9 @@ import './Editor.css';
 import { useState } from 'react';
 
 // Import the API functions from their respective files
-import { Employee } from '../../api/Employees.js';
-import { Project } from '../../api/Projects.js';
-import { Assignment } from '../../api/Assignments.js';
+import { Employee } from '../../../api/registrations.js';
+import { Project } from '../../../api/courses.js';
+import { Assignment } from '../../../api/users.js';
 
 // Editor Component
 function Editor() {

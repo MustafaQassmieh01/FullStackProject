@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Assignment } from "../../api/Assignments.js";
-import Caret from "../Icon/Caret.jsx";
+import { Assignment } from "../../../api/Assignments.js";
+import Caret from "../../Icon/Caret.jsx";
 import './Assignments.css';
 
 function Assignments() {
