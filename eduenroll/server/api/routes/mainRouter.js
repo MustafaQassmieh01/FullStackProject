@@ -15,12 +15,16 @@ router.delete('/users/:id', tokenControl.authenticate(true), Controller.deleteUs
 // Course Routes
 router.post('/courses', tokenControl.authenticate(true), Controller.createCourse); // Admin only
 router.get('/courses', tokenControl.authenticate(), Controller.getAllCourses); // Authenticated
+router.get('/courses/:code', tokenControl.authenticate(), Controller.getCourseByCode); // Authenticated
 router.put('/courses/:id/capacity', tokenControl.authenticate(true), Controller.updateCourseCapacity); // Admin only
 
 // Registration Routes
 router.post('/registrations', tokenControl.authenticate(), Controller.createRegistration); // Authenticated
 router.get('/registrations', tokenControl.authenticate(true), Controller.getAllRegistrations); // Admin only
-router.get('/registrations/user/:userId', tokenControl.authenticate(), Controller.getUserRegistrations); // Authenticated
+router.get('/registrations/user', tokenControl.authenticate(), Controller.getUserRegistrations); // Authenticated
+// i just figured out that with this being used by the client, they will likely be able to access other users' registrations
+// so we need to ensure that the user can only access their own registrations
+router.get('/registrations/admin/:userId', tokenControl.authenticate(true), Controller.getUserRegistrationsAdmin); // Authenticated
 router.get('/registrations/course/:courseId', tokenControl.authenticate(true), Controller.getCourseRegistrations); // Admin only
 router.put('/registrations/:id', tokenControl.authenticate(), Controller.editRegistration); // Authenticated
 router.patch('/registrations/:id/status', tokenControl.authenticate(true), Controller.changeStatus); // Admin only

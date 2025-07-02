@@ -14,6 +14,7 @@
 
 import Registration from "../models/registration.js";
 import { handleMongooseError } from "../../utils/errorHandler.js";
+import { jwtDecode } from "jwt-decode";
 
 const RegistrationController = {
 
@@ -75,11 +76,11 @@ const RegistrationController = {
      * @param {Object} req - The request object containing user ID.
      * @param {Object} res - The response object to send the result.
      */
-    getUserRegistrations: async (req, res) => {
+    getUserRegistrationsAdmin: async (req, res) => {
         try {
-            const { userId } = req.params;
+            const { username } = req.params;
 
-            if (!userId) {
+            if (!username) {
                 return res.status(400).json({
                     success: false,
                     message: "User ID is required"
@@ -94,6 +95,35 @@ const RegistrationController = {
                 });
             }
 
+            return res.status(200).json({
+                success: true,
+                data: registrations
+            });
+        } catch (error) {
+            return handleMongooseError(error, res);
+        }
+    },
+    /**
+     * Fetches registrations for the authenticated user.
+     * @param {Object} req - The request object containing user ID from the token.
+     * @param {Object} res - The response object with all the registrations for the user.
+     */
+    getUserRegistrations: async (req, res) => {
+        try{
+            const username = req.user.username; // Assuming the username is stored in the token
+            if (!username) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Username is required (from token)"
+                });
+            }
+            const registrations = await Registration.find({ username: username });
+            if (registrations.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: "No registrations found for this user"
+                });
+            }
             return res.status(200).json({
                 success: true,
                 data: registrations

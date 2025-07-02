@@ -1,13 +1,9 @@
-import { useUser, useToken } from '../context/authProvider.js';
-
 
 // because I can only use useUser and useToken inside a component or a custom hook, I will create a custom hook to use the user and token context
 // this feels stupid, but it's the only way to use the context inside an async function
-export const userApi = ()=>{
-    const { user, setUser } = useUser();
-    const { token, setToken } = useToken();
+export const userApi ={
     
-    const login = async (username, password) => {
+    login : async (username, password) => {
         try{
             const res = await fetch('/eduenroll/api/users/login',
                 {
@@ -22,9 +18,7 @@ export const userApi = ()=>{
 
             switch(res.status) {
                 case 200:
-                    setUser(resJson.data);
-                    setToken(res.accessToken);
-                    return await res.json();
+                    return resJson; // Return the user data on successful login
                 case 401:
                     throw new Error('Invalid username or password');
                 case 403:
@@ -37,9 +31,9 @@ export const userApi = ()=>{
             console.error('Login error:', error);
             throw error;
         }
-    }
+    },
 
-    const signup = async (userData) => {
+    signup : async (userData) => {
         try {
             const res = await fetch('/eduenroll/api/users', {
                 method: 'POST',
@@ -56,10 +50,7 @@ export const userApi = ()=>{
             console.error('Error signing up:', error);
             throw error;
         }
-    }
+    },
 
-    return{
-        login,
-        signup
-    }
+    
 }

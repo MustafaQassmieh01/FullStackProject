@@ -6,10 +6,12 @@ import UserController from "./user.js";
 const Controller = {
     createCourse: CourseController.createCourse,
     getAllCourses: CourseController.getAllCourses,
+    getCourseByCode: CourseController.getCourseByCode,
     updateCourseCapacity: CourseController.updateCourseCapacity,
     createRegistration: RegistrationController.createRegistration,
     getAllRegistrations: RegistrationController.getAllRegistrations,
     getUserRegistrations: RegistrationController.getUserRegistrations,
+    getUserRegistrationsAdmin: RegistrationController.getUserRegistrationsAdmin,
     getCourseRegistrations: RegistrationController.getCourseRegistrations,
     editRegistration: RegistrationController.editRegistration,
     changeStatus: RegistrationController.changeStatus,

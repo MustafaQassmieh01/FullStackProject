@@ -7,6 +7,7 @@
  */
 import Course from "../models/course.js";
 import { handleMongooseError } from "../../utils/errorHandler.js";
+import { get } from "mongoose";
 const CourseController = {
 
     /**
@@ -66,6 +67,30 @@ const CourseController = {
         }
     },
 
+    /**
+     * 
+     * @param {Object} req - The request object containing the course code in the URL parameters.
+     * @param {Object} res - The response object to send the result.
+     * @returns 
+     */
+    getCourseByCode: async (req, res) => {
+        try{
+            const { code } = req.params;
+            const course = await Course.findOne({ code });
+            if (!course) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Course not found"
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                data: course
+            });
+        } catch (error) {
+            return handleMongooseError(error, res);
+        }
+    },
     /**
      * changes the capacity of a course.
      * @param {Object} req - The request object containing course code and new capacity.

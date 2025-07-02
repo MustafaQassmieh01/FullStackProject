@@ -8,17 +8,17 @@ const tokenControl = {
             const token = authHeader && authHeader.split(' ')[1];
             
             if (!token) {
-                return res.status(401).json({ error: 'Access token is missing' });
+                return res.status(400).json({ error: 'Access token is missing' });
             }
-            jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+            jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
                 if (err) {
-                    return res.status(403).json({ error: 'Invalid access token' });
+                    return res.status(401).json({ error: 'Invalid access token' });
                 }
-                const decoded = token ? jwtDecode(token) : null;
                 req.user = decoded; // Attach user info to request object
                 if (adminRequired && !decoded.admin) {
                     return res.status(403).json({ error: 'Admin access required' });
                 }
+                
                 next();
             });
        

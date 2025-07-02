@@ -40,6 +40,10 @@
 | Deployment  | Vercel (frontend), Render or Railway (backend + DB) |
 
 ---
+### Quality of life Features:
+- being able to find out straight away if the username is taken
+- search for cources by name, teacher, field
+
 
 ## 📦 Getting Started
 
@@ -47,3 +51,4 @@
 ```bash
 git clone https://github.com/MustafaQassmieh01/FullStackProject.git
 cd eduenroll
+
