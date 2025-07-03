@@ -197,7 +197,9 @@ const PrerequisiteController = {
             }
 
             // Fetch prerequisites for the course
-            const prerequisites = await Prerequisite.find({ course_code });
+            const prerequisites = await Prerequisite.find({ course_code })
+            .populate('prerequisite_code','code title');
+            
             if (prerequisites.length === 0) {
                 return res.status(404).json({
                     success: false,

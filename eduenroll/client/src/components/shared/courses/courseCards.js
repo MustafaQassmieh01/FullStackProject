@@ -1,102 +1,183 @@
 import { useEffect, useState } from "react";
 import { Assignment } from "../../../api/Assignments.js";
-import Caret from "../../Icon/Caret.jsx";
+import {userApi} from "../../../api/userApi"
+import {ChevronDownIcon, ChevronUpIcon }from '@heroicons/react/solid'
 import './Assignments.css';
 
 function Assignments() {
-  const [assignments, setAssignments] = useState([]);
-
-  const fetchAssignments = async () => {
-    try {
-      const data = await Assignment.getAssignments();
-      setAssignments(data);
-    } catch (error) {
-      console.error("Failed to fetch assignments:", error);
+  const [courses,setCourses] = useState([]);
+  useEffect(()=>{
+    async function fetchCourses(){
+      const data = await userApi.getAllCourses()
+      setCourses(data)
     }
-  }
+    fetchCourses()
+  },[]);
   
-  useEffect(() => {
-    fetchAssignments();
-    const interval = setInterval(fetchAssignments,60000); // 60 seconds
-    
-    return () => clearInterval(interval); 
-  }, []);
 
   return (
-    <div className="assignments">
-      <h1>Assignments</h1>
-      <Table assignments={assignments} />
+    <div className="courses">
+      <h1>Available Courses</h1>
+      <CoursesMain courses={courses} />
     </div>
   );
 }
 
 
-function Table({assignments}) {
+function CoursesMain({courses}) {
+  // so here i made headers
   const headers = [
-    {id:1, KEY:'employee_id.employee_id', label: 'Employee ID'},
-    {id:2, KEY:'employee_id.full_name', label: 'Employee Name'},
-    {id:3, KEY:'project_code.project_name', label: 'Project Name'},
-    {id:4, KEY:'start_date', label: 'Start Date',isDate:true}
+  {id:1,KEY:'code', label:'Course Code'},
+  {id:2,KEY:'title',label:'Title'},
+  {id:3,KEY:'teacher_id',label: 'Teacher Id'}
   ]
-  const [sort,setSort] = useState({keyToSort:'employee_id.employee_id',direction:"asc"});
+  const [sort,setSort] = useState({keyToSort:'code',direction:"asc"});
+  // made a function that checks if the key is asc changes it and vice versa 
+  function handleLabelClick(key) {
+    setSort(prevSort => ({
+      keyToSort: key,
+      direction: key === prevSort.keyToSort
+        ? (prevSort.direction === 'asc' ? 'desc' : 'asc')
+        : 'desc'
+  }));
+}
 
-  function handleHeaderClick(header) {
-    setSort({
-      keyToSort:header.KEY,
-      direction:
-      header.KEY === sort.keyToSort?sort.direction === "asc" ? "desc" : "asc": 'desc' // if the header is the same as the current sort key, toggle the direction 
-    });
-  }
 
-  function getSortedArray(array,headerKey) {
-    if (sort.direction === "asc"){
-      return array.sort((a, b) => {
-        return getValueFromPath(a, sort.keyToSort) > getValueFromPath(b, sort.keyToSort) ? 1 : -1;
-      });
-    }
-    return array.sort((a, b) => {
-      return getValueFromPath(a, sort.keyToSort) > getValueFromPath(b, sort.keyToSort) ? -1 : 1;
-    })
+  // function that takes the sort direction and basically if its top then ascending and if its bottom its decending 
+  function getSortedArray(array) {
+  const sorted = [...array]; // shallow copy
+  if (sort.direction === "asc") {
+    sorted.sort((a, b) => getValueFromPath(a, sort.keyToSort) > getValueFromPath(b, sort.keyToSort) ? 1 : -1);
+  } else {
+    sorted.sort((a, b) => getValueFromPath(a, sort.keyToSort) > getValueFromPath(b, sort.keyToSort) ? -1 : 1);
   }
+  return sorted;
+}
+
 
   return (
-    <table>
-      <thead>
-        <tr>
-          {headers.map((header,index) => (
-            
-            <th key={index} onClick={() => handleHeaderClick(header)}>
-              <div className="header-container">
-                <span>{header.label}</span>
-                <span className="caret">
-                  {header.KEY === sort.keyToSort &&(
-                    <Caret 
-                    direction={sort.keyToSort ===header.KEY? sort.direction:'asc'}/>
-                  )} 
-                </span>
-              </div>
-            </th>
-            
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {getSortedArray(assignments).map((row, index) => (
-          <tr key={index}>
-            {headers.map((header, index) => {
-              return ( 
-              <td key={index}>
-                {header.isDate ? new Date(getValueFromPath(row, header.KEY)).toLocaleDateString() : getValueFromPath(row, header.KEY)}
-              </td>
-              )
-            })}
-          </tr>
+    <section>
+      <div id='courses-header'>
+        <select value={sort.keyToSort} onChange={(e) => handleLabelClick(e.target.value)}>
+          <option value="" disabled>Select sort option</option>
+            {headers.map((header) => (
+              <option key={header.id} value={header.KEY}>
+               {header.label}
+              </option>
+            ))}
+        </select>
+
+      </div>
+      {/* this ends the whole presenting the headlines you can also see the onclick for the t */}
+      <div id='courses-main'>
+        {getSortedArray(courses).map((course) => (
+          <CourseCard course = {course}/>
         ))}
-      </tbody>
-    </table>
+      </div>
+    </section>
   );
 }
 
+function CourseCard({course}){
+  const [visible, setVisible] = useState(false)
+  const mainHeaders = [
+  { KEY: 'code', label: 'Course Code' },
+  { KEY: 'title', label: 'Title' },
+  { KEY: 'teacher_id', label: 'Teacher Id' }
+];
+
+const extraHeaders = [
+  { KEY: 'description', label: 'Description' },
+  { KEY: 'capacity', label: 'Capacity' }
+];
+// const code = course.code;
+  const handleClick = (courseCode)=>{
+    userApi.register(courseCode);
+  }
+  return (
+      <div className="course-card border p-4 rounded shadow-md mb-4">
+      <div className="mb-2">
+        {mainHeaders.map(({ KEY, label }) => (
+          <div key={KEY}>
+            <strong>{label}:</strong> {course[KEY]}
+          </div>
+        ))}
+      </div>
+      <button
+        type="button"
+        className="inline-block rounded-full bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 motion-reduce:transition-none dark:bg-primary-300 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-400"
+        onClick={()=>handleClick(course.code)}>
+        
+      </button>
+      
+      <br/>
+     <button
+      onClick={() => setVisible((prev) => !prev)}
+      className="p-1"
+      >
+        <ChevronDownIcon
+          className={`h-5 w-5 transform transition-transform duration-200 ${
+            visible ? 'rotate-180' : ''
+          }`}
+        />
+      </button>
+
+      {visible &&<>
+      <div className="text-sm text-gray-700 mt-2">
+        {extraHeaders.map(({ KEY, label }) => (
+          <div key={KEY}>
+            <strong>{label}:</strong> {course[KEY]}
+          </div>
+        ))}
+      </div>
+       <Prerequisites courseCode={course.code} />
+       </>  
+      }
+    </div>
+  )
+}
+
+function Prerequisites({ courseCode }) {
+  const [prereqs, setPrereqs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+
+    async function fetchPrereqs() {
+      try {
+        const data = await userApi.getPrerequisitesByCourseCode(courseCode);
+        setPrereqs(data);
+      } catch (e) {
+        console.log('CourseCards.Prerequisites > ',e)
+        // Optional: show error to user, but your API already logs it
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchPrereqs();
+  }, [courseCode]);
+
+  if (loading) return <p>Loading prerequisites...</p>;
+
+  return (
+    <div>
+      <h4 className="font-semibold">Prerequisites</h4>
+      {prereqs.length === 0 ? (
+        <p className="text-sm text-gray-500">No prerequisites.</p>
+      ) : (
+        <ul className="list-disc ml-6 mt-1 text-sm text-gray-800">
+          {prereqs.map((requirement) => (
+            <li key={requirement.prerequisite_code.code || requirement.prerequisite_code}>
+              {requirement.prerequisite_code.title || requirement.prerequisite_code.code}
+              {requirement.description && <p>{requirement.description}</p>}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 function getValueFromPath(obj, path) {
   return path.split('.').reduce((o, p) => (o ? o[p] : undefined), obj);
 }

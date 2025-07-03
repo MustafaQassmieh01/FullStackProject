@@ -10,7 +10,7 @@ export const prerequisites = {
                 throw new Error(`Error fetching prerequisites for course ${courseCode}: ${response.statusText}`);
             }
             const data = await response.json();
-            return data;
+            return data.data;
         }catch (error) {
             console.error('Error fetching prerequisites by course code:', error);
             throw error;

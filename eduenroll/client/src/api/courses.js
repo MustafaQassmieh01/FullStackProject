@@ -7,7 +7,7 @@ export const courses= {
                 method: 'GET'
             });
             const data = await response.json();
-            return data;
+            return data.data;
         }catch (error) {
             console.error('Error fetching courses:', error);
             throw error;
