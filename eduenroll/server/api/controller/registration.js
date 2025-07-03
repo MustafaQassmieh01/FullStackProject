@@ -53,6 +53,51 @@ const RegistrationController = {
             return handleMongooseError(error, res);
         }
     },
+    /** 
+     * adds a registration for a course based on the user's token.
+     * @param {Object} req - The request object containing course code.
+     * @param {Object} res - The response object to send the result.
+     * @returns {Object} - The response object containing the created registration. 
+     */ 
+    registerToCourse: async (req, res) => {
+        try{
+            const { courseCode } = req.params;
+            const username = req.user.username; // Assuming the username is stored in the token
+
+            if (!courseCode) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Course code is required"
+                });
+            }
+            const count = await Registration.countDocuments();
+
+            // Check if the user is already registered for this course
+            const existingRegistration = await Registration.findOne({ username, course_code: courseCode });
+            if (existingRegistration) {
+                return res.status(400).json({
+                    success: false,
+                    message: "You are already registered for this course"
+                });
+            }
+
+            const newRegistration = new Registration({
+                registration_id: `reg_${course_code}-${count + 1}`, // Generate a unique registration ID
+                username,
+                course_code: courseCode,
+                status: "pending" // Default status
+            });
+
+            await newRegistration.save();
+            return res.status(201).json({
+                success: true,
+                message: "Registration created successfully",
+                data: newRegistration
+            });
+        }catch (error) {
+            return handleMongooseError(error, res);
+        }
+    },
 
     /**
      * Fetches all registrations.

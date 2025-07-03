@@ -1,5 +1,6 @@
-import {userApi} from '../../../api/users.js';
-import {  useUser, useToken } from '../../../context/authProvider.jsx';
+import {userApi} from '../../../api/userApi.js';
+import {  useUser } from '../../../context/authProvider.jsx';
+import navigate from '../../../utils/navigate.js';
 // import { useNavigate } from 'react-router-dom';
 
 
@@ -8,7 +9,6 @@ function LoginForm() {
     // const navigate = useNavigate();
 
     const { setUser } = useUser();
-    const { setToken } = useToken();
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
@@ -20,14 +20,10 @@ function LoginForm() {
         userApi.Login(username, password).then(response => {
             
             console.log('Login successful:', response);
-            const { user } = response.data
-            const token  =  response.token
+            const { user } = response.data;
             // Set user and token in context
             setUser(user);
-            setToken(token);
-            
-            // Handle successful login, e.g., redirect or show a message
-            // navigate('/dashboard'); // Redirect to home page or dashboard
+            navigate('/dashboard')
 
         }).catch(error => {
             console.error('Login failed:', error);

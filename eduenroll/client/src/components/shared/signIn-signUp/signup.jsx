@@ -1,9 +1,12 @@
 import { userApi } from "../../../api/users";
+import {useUser} from '../../../context/authProvider'
+import { useNavigate } from "react-router-dom";
 import './style.css'
 
 function SignupForm() {
    
-    // const { setUser } = useUser();
+    const { setUser } = useUser();
+    const navigate = useNavigate();
     // const { setToken } = useToken();
     
     const handleSubmit = async (e) => {
@@ -20,6 +23,12 @@ function SignupForm() {
         userApi.signup(userData)
             .then(response => {
                 console.log('Signup successful:', response);
+                userApi.login(userData.username, userData.password)
+                .then(loginResponse => {
+                    console.log('Login successful:', loginResponse);
+                    setUser(loginResponse.data)
+                    navigate('/dashboard')
+                })
                 // Handle successful signup, e.g., redirect or show a message
             })
             .catch(error => {

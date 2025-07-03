@@ -1,7 +1,7 @@
-
+import {setToken} from '../auth/tokenStore.js';
 // because I can only use useUser and useToken inside a component or a custom hook, I will create a custom hook to use the user and token context
 // this feels stupid, but it's the only way to use the context inside an async function
-export const userApi ={
+export const users ={
     
     login : async (username, password) => {
         try{
@@ -15,6 +15,12 @@ export const userApi ={
                 }
             )
             const resJson = await res.json();
+            if (!res.ok) {
+                throw new Error('Network response was not ok' + res.statusText);
+            }
+
+            setToken(resJson.token); // Store the token in local storage or context
+
 
             switch(res.status) {
                 case 200:
