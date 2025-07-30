@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { useUser } from '../../context/authProvider';
-import { getToken } from '../../auth/tokenStore';
+import { useUser } from '../context/authProvider';
+import { getToken } from '../auth/tokenStore';
 
 
 const ProtectedRoute = ({requiresAdmin= false}) => {

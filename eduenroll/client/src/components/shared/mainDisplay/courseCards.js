@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { Assignment } from "../../../api/Assignments.js";
+// import { Assignment } from "../../../api/Assignments.js";
 import {userApi} from "../../../api/userApi"
-import {ChevronDownIcon, ChevronUpIcon }from '@heroicons/react/solid'
+import {ChevronDownIcon, ChevronUpIcon }from '@heroicons/react/16/solid'
 import './Assignments.css';
 
-function Assignments() {
+function CourseDisplay() {
   const [courses,setCourses] = useState([]);
   useEffect(()=>{
-    async function fetchCourses(){
+    async function fetchCourses(){ 
       const data = await userApi.getAllCourses()
       setCourses(data)
     }
@@ -84,12 +84,12 @@ function CourseCard({course}){
   { KEY: 'code', label: 'Course Code' },
   { KEY: 'title', label: 'Title' },
   { KEY: 'teacher_id', label: 'Teacher Id' }
-];
+  ];
 
-const extraHeaders = [
+  const extraHeaders = [
   { KEY: 'description', label: 'Description' },
   { KEY: 'capacity', label: 'Capacity' }
-];
+  ];
 // const code = course.code;
   const handleClick = (courseCode)=>{
     userApi.register(courseCode);
@@ -122,7 +122,8 @@ const extraHeaders = [
         />
       </button>
 
-      {visible &&<>
+      {visible &&
+      <>
       <div className="text-sm text-gray-700 mt-2">
         {extraHeaders.map(({ KEY, label }) => (
           <div key={KEY}>
@@ -182,4 +183,4 @@ function getValueFromPath(obj, path) {
   return path.split('.').reduce((o, p) => (o ? o[p] : undefined), obj);
 }
 
-export default Assignments;
+export default CourseDisplay;

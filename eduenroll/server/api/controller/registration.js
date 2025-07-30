@@ -162,7 +162,7 @@ const RegistrationController = {
                     message: "Username is required (from token)"
                 });
             }
-            const registrations = await Registration.find({ username: username });
+            const registrations = await Registration.find({ username: username }).populate();
             if (registrations.length === 0) {
                 return res.status(404).json({
                     success: false,
