@@ -1,5 +1,5 @@
-import SignupForm from "./signIn-signUp/signup.jsx";
-import LoginForm from "./signIn-signUp/signIn.jsx";
+import SignupForm from "./signup.jsx";
+import LoginForm from "./signIn.jsx";
 import { useState } from "react";
 
 

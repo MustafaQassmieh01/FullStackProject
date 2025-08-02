@@ -1,15 +1,15 @@
+import {useUser} from '../context/userContext';
+import React, { useState, useEffect } from 'react';
+import { Registrations } from '../registrations';
+import { Head } from '../shared/components/pageHeader';
+import { NavColumn } from '../shared/components/sideBar';
+import { Footer } from '../shared/components/footer';
+
 function ProfilePage() {
-  const user = {
-    name: "Jane Doe",
-    title: "Software Engineer",
-    avatar: "https://via.placeholder.com/150",
-    bio: "Passionate about coding, design, and creating user-friendly apps.",
-    stats: {
-      followers: 1200,
-      following: 300,
-      posts: 45,
-    },
-  };
+  const { user } = useUser();
+  if (!user) {
+    return <div className="text-center text-gray-500">user not found</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
@@ -26,16 +26,16 @@ function ProfilePage() {
         </div>
 
         {/* Bio */}
-        <p className="mt-4 text-center text-gray-600">{user.bio}</p>
+        <p className="mt-4 text-center text-gray-600"><Clock /></p>
 
         {/* Stats */}
         <div className="mt-6 grid grid-cols-3 text-center">
           <div>
-            <p className="text-lg font-bold">{user.stats.followers}</p>
+            <p className="text-lg font-bold">{user.name}</p>
             <p className="text-gray-500 text-sm">Followers</p>
           </div>
           <div>
-            <p className="text-lg font-bold">{user.stats.following}</p>
+            <p className="text-lg font-bold">{}</p>
             <p className="text-gray-500 text-sm">Following</p>
           </div>
           <div>
@@ -54,4 +54,28 @@ function ProfilePage() {
     </div>
   );
 }
+
+function Clock(){
+  const [time, setTime] = useState(new Date());
+  useEffect(()=>{
+    const interval = setInterval(()=>{
+      setTime(new Date());
+    }, 1000); // Update every second
+    return () => clearInterval(interval);
+  })
+  return (
+    <>
+      <Head/>
+      <NavColumn/>
+      <div className=" mb-4">
+        <div className="text-center text-gray-500">
+          {time.toLocaleTimeString()}
+        </div>
+        <Registrations />
+      </div>
+      <Footer/>
+    </>
+  );
+}
+
 export default ProfilePage;
