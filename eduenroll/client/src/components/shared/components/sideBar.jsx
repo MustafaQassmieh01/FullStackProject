@@ -6,11 +6,14 @@ import {
   UserGroupIcon,
   Cog6ToothIcon,
   HomeIcon,
+  Bars4Icon
 } from '@heroicons/react/24/outline';
+import { useNavigate } from 'react-router-dom';
 
 function NavColumn({role}){
     const [visible, setVisible] = useState(false);
     const onClick = () =>{setVisible(!visible)}
+    const navigate = useNavigate();
 
     const links = {
         admin: [
@@ -55,13 +58,13 @@ function NavColumn({role}){
             <div className="mt-4 space-y-2">
                {
                 navLinks.map(link => (
-                <>
-                    <span key={link.name}
+                <div key={link.name}>
+                    <span 
                         className="flex items-center space-x-2">
                         {link.icon}
                     </span>
-                    <a key={link.name} href={link.route}>{link.name}</a>
-                </> 
+                    <a onClick={()=>{navigate(link.route)}} className='cursor-pointer'>{link.name}</a>
+                </div> 
                 ))}
             </div>
             )}

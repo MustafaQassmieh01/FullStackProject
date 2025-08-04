@@ -66,7 +66,7 @@ function Clock(){
   return (
     <>
       <Head/>
-      <NavColumn/>
+      <NavColumn role='user'/>
       <div className=" mb-4">
         <div className="text-center text-gray-500">
           {time.toLocaleTimeString()}

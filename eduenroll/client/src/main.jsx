@@ -1,14 +1,19 @@
 import { createRoot } from 'react-dom/client'
 import React from 'react';
 import './index.css'
-import FrontPage from './components/shared/login-signup/frontPage'
 import App from './App.jsx'
 import { AuthProvider } from './context/authProvider.jsx'
+import { BrowserRouter } from 'react-router-dom';
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
-  </React.StrictMode>,
+    <BrowserRouter>
+      <AuthProvider>
+        <>
+        <App />
+        <h1 className='text-red-300'>hello</h1>
+        </>
+      </AuthProvider>
+    </BrowserRouter>
+  </React.StrictMode>
 )
