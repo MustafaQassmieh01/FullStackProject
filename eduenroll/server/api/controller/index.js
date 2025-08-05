@@ -8,6 +8,7 @@ const Controller = {
     getAllCourses: CourseController.getAllCourses,
     getCourseByCode: CourseController.getCourseByCode,
     updateCourseCapacity: CourseController.updateCourseCapacity,
+    registerForCourse: RegistrationController.registerForCourse,
     createRegistration: RegistrationController.createRegistration,
     getAllRegistrations: RegistrationController.getAllRegistrations,
     getUserRegistrations: RegistrationController.getUserRegistrations,

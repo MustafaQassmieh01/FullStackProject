@@ -15,7 +15,7 @@ console.log(process.env.PORT);
 
 connection();
 app.use(express.json());
-app.use('/eduenroll/api', router);
+app.use('/api', router);
 app.use(logger('dev', { immediate: true }));
 const port = process.env.PORT;
 

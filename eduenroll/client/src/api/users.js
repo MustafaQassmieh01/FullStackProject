@@ -5,7 +5,7 @@ export const users ={
     
     login : async (username, password) => {
         try{
-            const res = await fetch('/eduenroll/api/users/login',
+            const res = await fetch('/api/users/login',
                 {
                     method: 'POST',
                     headers: {
@@ -41,15 +41,17 @@ export const users ={
 
     signup : async (userData) => {
         try {
-            const res = await fetch('/eduenroll/api/users', {
+            const res = await fetch('/api/users', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(userData)
+               
             });
+            console.log('User data:', userData);
             if (!res.ok) {
-                throw new Error('Network response was not ok' + res.statusText);
+                throw new Error('Network response was not ok > ' + res.status);
             }
             return await res.json();
         } catch (error) {

@@ -59,7 +59,7 @@ const RegistrationController = {
      * @param {Object} res - The response object to send the result.
      * @returns {Object} - The response object containing the created registration. 
      */ 
-    registerToCourse: async (req, res) => {
+    registerForCourse: async (req, res) => {
         try{
             const { courseCode } = req.params;
             const username = req.user.username; // Assuming the username is stored in the token

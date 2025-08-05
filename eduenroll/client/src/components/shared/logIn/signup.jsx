@@ -22,10 +22,10 @@ function SignupForm() {
     const email = formData.get('email');
     const password = formData.get('password');
     const admin = formData.get('admin') === 'on';
-
+    const userData = { username, name, email, password, admin };
     try {
       // Assuming userApi.Signup follows a similar pattern as userApi.Login
-      const response = await userApi.Signup(username, name, email, password, admin);
+      const response = await userApi.signup(userData);
       const { user } = response.data;
       setUser(user);
       navigate('/dashboard');
