@@ -1,16 +1,10 @@
 // import { useState } from 'react'
 // import './App.css'
-import FrontPage from './components/shared/logIn/frontPage'
+import Router  from './router/router.jsx';
 // eduenroll\client\src\components\shared\logIn\frontPage.jsx
 function App() {
 
-  return (
-   
-    <div>
-      <FrontPage />
-    </div>
-   
-  )
+  return (<Router />)
 }
 
 export default App

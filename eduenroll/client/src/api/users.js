@@ -19,13 +19,14 @@ export const users ={
                 throw new Error('Network response was not ok' + res.statusText);
             }
 
-            setToken(resJson.token); // Store the token in local storage or context
+            setToken(resJson.accessToken); // Store the token in local storage or context
 
 
             switch(res.status) {
                 case 200:
                     return resJson; // Return the user data on successful login
                 case 401:
+                    console.log(res.error.messsage);
                     throw new Error('Invalid username or password');
                 case 403:
                     throw new Error('Unauthorized access');

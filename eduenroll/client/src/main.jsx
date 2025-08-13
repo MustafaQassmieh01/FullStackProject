@@ -9,10 +9,7 @@ createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <>
         <App />
-        <h1 className='text-red-300'>hello</h1>
-        </>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>

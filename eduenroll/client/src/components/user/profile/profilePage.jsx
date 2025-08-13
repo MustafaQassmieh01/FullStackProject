@@ -1,9 +1,9 @@
-import {useUser} from '../context/userContext';
+import {useUser} from '../../../context/authProvider';
 import React, { useState, useEffect } from 'react';
-import { Registrations } from '../registrations';
-import { Head } from '../shared/components/pageHeader';
-import { NavColumn } from '../shared/components/sideBar';
-import { Footer } from '../shared/components/footer';
+import Registrations from './registrations';
+import Head  from '../../../components/shared/components/pageHeader';
+import NavColumn  from '../../../components/shared/components/sideBar';
+import Footer  from '../../../components/shared/components/footer';
 
 function ProfilePage() {
   const { user } = useUser();

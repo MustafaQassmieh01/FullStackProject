@@ -72,3 +72,4 @@ function NavColumn({role}){
     )
 
 }
+export default NavColumn;

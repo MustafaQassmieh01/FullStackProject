@@ -20,15 +20,18 @@ function LoginForm() {
     const password = formData.get('password');
 
     try {
-      const response = await userApi.Login(username, password);
-      const { user } = response.data;
+      const response = await userApi.login(username, password);
+      const user  = response.data;
+      console.log('Login successful:', response);
       setUser(user);
-      navigate('/dashboard');
+      console.log('User data:', user);
+      navigate('/home');
     } catch (err) {
       console.error('Login failed:', err);
       setError('Invalid username or password.');
     } finally {
       setLoading(false);
+      
     }
   };
 

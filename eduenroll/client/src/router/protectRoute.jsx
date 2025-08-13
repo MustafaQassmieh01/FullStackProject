@@ -5,15 +5,19 @@ import { getToken } from '../auth/tokenStore';
 
 
 const ProtectedRoute = ({requiresAdmin= false}) => {
-    const { user } = useUser();
+    const user  = useUser();
     const token = getToken();
+    console.log('ProtectedRoute user:', user);
     // If no user or token, redirect to login
     if (!user || !token) {
-        return <Navigate to="/login" replace />;
+        console.log('User not authenticated, redirecting to login');
+        return <Navigate to="/" replace />;
+
     }
 
     // If requiresAdmin is true and user is not an admin, redirect to home
     if (requiresAdmin && !user.isAdmin) {
+        console.log('User is not an admin, redirecting to unauthorized page');
         return <Navigate to="/unauthorised" replace />;
     }
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 // import { Assignment } from "../../../api/Assignments.js";
 import {userApi} from "../../../api/userApi"
 import {ChevronDownIcon, ChevronUpIcon }from '@heroicons/react/16/solid'
-import './Assignments.css';
+
 
 function CourseDisplay() {
   const [courses,setCourses] = useState([]);
