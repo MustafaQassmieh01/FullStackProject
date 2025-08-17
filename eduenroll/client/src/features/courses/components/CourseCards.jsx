@@ -16,8 +16,7 @@ function CourseDisplay() {
   
 
   return (
-    <div className="courses">
-      <h1>Available Courses</h1>
+    <div className="courses justify-self-center min-w-2xl max-w-3xl bg-gray-300 p-6 rounded-lg shadow-md">
       <CoursesMain courses={courses} />
     </div>
   );
@@ -57,7 +56,8 @@ function CoursesMain({courses}) {
 
   return (
     <section>
-      <div id='courses-header'>
+      <div className="p-5 " id='courses-header'>
+        <h2 className="text-2xl font-bold mb-4">Available Courses</h2>
         <select value={sort.keyToSort} onChange={(e) => handleLabelClick(e.target.value)}>
           <option value="" disabled>Select sort option</option>
             {headers.map((header) => (
@@ -69,11 +69,11 @@ function CoursesMain({courses}) {
 
       </div>
       {/* this ends the whole presenting the headlines you can also see the onclick for the t */}
-      <div id='courses-main'>
+      <>
         {getSortedArray(courses).map((course) => (
-          <CourseCard course = {course}/>
+          <CourseCard key={course.code} course={course}/>
         ))}
-      </div>
+      </>
     </section>
   );
 }
@@ -95,7 +95,7 @@ function CourseCard({course}){
     userApi.register(courseCode);
   }
   return (
-      <div className="course-card border p-4 rounded shadow-md mb-4">
+      <div className="course-card bg-gray-100 ring border p-4 rounded shadow-md mb-4" key={course.code}>
       <div className="mb-2">
         {mainHeaders.map(({ KEY, label }) => (
           <div key={KEY}>
@@ -105,8 +105,9 @@ function CourseCard({course}){
       </div>
       <button
         type="button"
-        className="inline-block rounded-full bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 motion-reduce:transition-none dark:bg-primary-300 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-400"
+        className="inline-block rounded-full bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 motion-reduce:transition-none dark:bg-primary-300 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-400"
         onClick={()=>handleClick(course.code)}>
+        Register
         
       </button>
       

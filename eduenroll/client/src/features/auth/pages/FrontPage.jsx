@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import SignupForm from './signup.jsx';
-import LoginForm from './signIn.jsx';
+import SignupForm from '../components/signup.jsx';
+import LoginForm from '../components/SignIn.jsx';
 
 function FrontPage() {
   const [activeForm, setActiveForm] = useState('login');

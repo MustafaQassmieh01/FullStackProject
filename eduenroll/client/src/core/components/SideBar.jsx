@@ -32,19 +32,19 @@ function NavColumn({role}){
             {
             name: 'Profile',
             icon: <IdentificationIcon className="w-6 h-6" />,
-            route: '/user/profile',
+            route: '/profile',
             },
             {
-            name: 'Settings',
-            icon: <Cog6ToothIcon className="w-6 h-6" />,
-            route: '/user/settings',
+            name: 'about',
+            icon: <InformationCircleIcon className="w-6 h-6" />,
+            route: '/about',
             },
         ],
     };
 
     const navLinks = links[role] || [];
     return (
-        <>
+        <div className="nav-column bg-gray-100 p-4 rounded-lg shadow-md">
             <div
             onClick={onClick}
             className='w-12 h-12 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 cursor-pointer transition'
@@ -68,7 +68,7 @@ function NavColumn({role}){
                 ))}
             </div>
             )}
-        </>
+        </div>
     )
 
 }

@@ -21,7 +21,7 @@ function Registrations(){
             <h1>My Registrations</h1>
             <div className="registration-list">
                 {registrations.map(registration => (
-                    <RegistrationCard {...registration} />
+                    <RegistrationCard key={registration.registration_id} {...registration} />
                 ))}
             </div>
         </div>

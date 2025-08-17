@@ -1,10 +1,17 @@
-import {useUser} from '../../../context/authProvider';
+import {useUser} from '../../../core/context/authProvider';
 import React, { useState, useEffect } from 'react';
-import Registrations from './registrations';
-import Head  from '../../../components/shared/components/pageHeader';
-import NavColumn  from '../../../components/shared/components/sideBar';
-import Footer  from '../../../components/shared/components/footer';
+import Registrations from '../components/Registrations';
+import Head  from '../../../core/components/PageHeader';
+import NavColumn  from '../../../core/components/SideBar';
+import Footer  from '../../../core/components/Footer';
 
+function Profile() {
+  return (
+    <div className="profile-page bg-gray-100 min-h-screen">
+      <h1>profile here</h1>
+    </div>
+  );
+}
 function ProfilePage() {
   const { user } = useUser();
   if (!user) {
@@ -26,16 +33,18 @@ function ProfilePage() {
         </div>
 
         {/* Bio */}
-        <p className="mt-4 text-center text-gray-600"><Clock /></p>
+        <div className="mt-4 text-center text-gray-600">
+          <Clock />
+        </div>
 
         {/* Stats */}
         <div className="mt-6 grid grid-cols-3 text-center">
           <div>
-            <p className="text-lg font-bold">{user.name}</p>
+            <p className="text-lg font-bold">{user.stats.followers}</p>
             <p className="text-gray-500 text-sm">Followers</p>
           </div>
           <div>
-            <p className="text-lg font-bold">{}</p>
+            <p className="text-lg font-bold">{user.stats.following}</p>
             <p className="text-gray-500 text-sm">Following</p>
           </div>
           <div>
@@ -62,7 +71,7 @@ function Clock(){
       setTime(new Date());
     }, 1000); // Update every second
     return () => clearInterval(interval);
-  })
+  }, []);
   return (
     <>
       <Head/>

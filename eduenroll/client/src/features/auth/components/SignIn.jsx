@@ -1,14 +1,28 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from '../../../context/authProvider';
+import { useUser } from '../../../core/context/authProvider.jsx';
 import { userApi } from '../../../api/userApi.js';
 
 function LoginForm() {
   const navigate = useNavigate();
   const { setUser } = useUser();
-
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const handleLogin = async (username, password) => {
+    setError(null);
+    setLoading(true);
+    try {
+      const response = await userApi.login(username, password);
+      const user = response.data;
+      setUser(user);
+      navigate('/home');
+    } catch (err) {
+      const apiError = err?.response?.data?.message;
+      setError(apiError || 'Invalid username or password.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,21 +32,7 @@ function LoginForm() {
     const formData = new FormData(e.target);
     const username = formData.get('username');
     const password = formData.get('password');
-
-    try {
-      const response = await userApi.login(username, password);
-      const user  = response.data;
-      console.log('Login successful:', response);
-      setUser(user);
-      console.log('User data:', user);
-      navigate('/home');
-    } catch (err) {
-      console.error('Login failed:', err);
-      setError('Invalid username or password.');
-    } finally {
-      setLoading(false);
-      
-    }
+    await handleLogin(username, password);
   };
 
   return (

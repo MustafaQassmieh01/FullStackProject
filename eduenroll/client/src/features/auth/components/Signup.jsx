@@ -1,5 +1,5 @@
 import { userApi } from "../../../api/userApi.js";
-import {useUser} from '../../../context/authProvider'
+import {useUser} from '../../../core/context/authProvider';
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
