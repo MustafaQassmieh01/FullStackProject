@@ -9,14 +9,16 @@ export const requestToken = () => {
     }
 
     isRefreshing = true;
-    refreshPromise =  fetch('/eduenroll/api/token/refresh', {
+    refreshPromise =  fetch('/api/token/refresh', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
+        credentials: 'include', // Include cookies in the request
     })
     .then(async (res) => {
         if(!res.ok) {
+            console.log('Failed refresh token:', res);
             throw new Error('Failed to refresh token');
         }
         const data = await res.json();

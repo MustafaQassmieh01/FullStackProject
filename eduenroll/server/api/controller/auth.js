@@ -14,7 +14,7 @@ const tokenControl = {
                 if (err) {
                     return res.status(401).json({ error: 'Invalid access token' });
                 }
-                req.user = decoded; // Attach user info to request object
+                req.user = decoded; 
                 if (adminRequired && !decoded.admin) {
                     return res.status(403).json({ error: 'Admin access required' });
                 }
@@ -30,11 +30,11 @@ const tokenControl = {
     },
 
     generateAccessToken: (user) => {
-        return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+        return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1m' });
     },
 
     refreshAccessToken: (req, res) => {
-        const refreshToken = req.cookies.refreshToken || req.body.refreshToken || req.query.refreshToken; // refactor this to only cokies for production
+        const refreshToken = req.cookies.refreshToken ; // refactor this to only cokies for production
         if (!refreshToken) {
             return res.status(401).json({ error: 'Refresh token is required' });
         }

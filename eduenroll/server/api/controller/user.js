@@ -224,7 +224,7 @@ const UserController = {
                 secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
                 sameSite: 'strict', // Prevent CSRF attacks
                 maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-                path: '/api/eduenroll/users/login' // Set path to restrict cookie to this endpoint
+                path: '/api' // Set path to restrict cookie to this endpoint
             }).status(200).json({
                 success: true,
                 message: "Login successful",

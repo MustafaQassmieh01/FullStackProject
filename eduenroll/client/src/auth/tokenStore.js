@@ -1,6 +1,5 @@
-let token = null;
-
 export const setToken = (newToken) => {
-    token = newToken;
-}
-export const getToken = () => token;
+    localStorage.setItem('token', newToken);
+};
+export const getToken = () => localStorage.getItem('token');
+export const removeToken = () => localStorage.removeItem('token');

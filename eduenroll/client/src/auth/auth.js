@@ -22,6 +22,7 @@ export const authFetch = async (url,options = {}) => {
         try{
             await requestToken();
             const newToken = getToken();
+            localStorage.setItem('token', newToken);
 
             if (!newToken) throw new Error('401: Failed to refresh token');
             response = await fetch(url, buildFetchOptions(newToken));
