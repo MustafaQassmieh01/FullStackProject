@@ -36,6 +36,7 @@ const tokenControl = {
     refreshAccessToken: (req, res) => {
         const refreshToken = req.cookies.refreshToken ; // refactor this to only cokies for production
         if (!refreshToken) {
+            console.error('Refresh token is missing');
             return res.status(401).json({ error: 'Refresh token is required' });
         }
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {

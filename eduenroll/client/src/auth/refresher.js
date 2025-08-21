@@ -22,8 +22,8 @@ export const requestToken = () => {
             throw new Error('Failed to refresh token');
         }
         const data = await res.json();
-        setToken(data.Token);
-        return data.Token;
+        setToken(data.accessToken);
+        return data.accessToken;
     })
     .catch((error) => {
         console.error('Error refreshing token:', error);
