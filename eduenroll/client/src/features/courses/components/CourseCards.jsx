@@ -7,13 +7,13 @@ import {ChevronDownIcon, ChevronUpIcon }from '@heroicons/react/16/solid'
 function CourseDisplay() {
   const [courses,setCourses] = useState([]);
   useEffect(()=>{
-    async function fetchCourses(){ 
+    async function fetchCourses(){
       const data = await userApi.getAllCourses()
       setCourses(data)
     }
     fetchCourses()
   },[]);
-  
+
 
   return (
     <div className="courses justify-self-center min-w-2xl max-w-3xl bg-gray-300 p-6 rounded-lg shadow-md">
@@ -31,7 +31,7 @@ function CoursesMain({courses}) {
   {id:3,KEY:'teacher_id',label: 'Teacher Id'}
   ]
   const [sort,setSort] = useState({keyToSort:'code',direction:"asc"});
-  // made a function that checks if the key is asc changes it and vice versa 
+  // made a function that checks if the key is asc changes it and vice versa
   function handleLabelClick(key) {
     setSort(prevSort => ({
       keyToSort: key,
@@ -42,7 +42,7 @@ function CoursesMain({courses}) {
 }
 
 
-  // function that takes the sort direction and basically if its top then ascending and if its bottom its decending 
+  // function that takes the sort direction and basically if its top then ascending and if its bottom its decending
   function getSortedArray(array) {
   const sorted = [...array]; // shallow copy
   if (sort.direction === "asc") {
@@ -108,9 +108,9 @@ function CourseCard({course}){
         className="inline-block rounded-full bg-blue-300 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 motion-reduce:transition-none dark:bg-primary-300 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-400"
         onClick={()=>handleClick(course.code)}>
         Register
-        
+
       </button>
-      
+
       <br/>
      <button
       onClick={() => setVisible((prev) => !prev)}
@@ -133,7 +133,7 @@ function CourseCard({course}){
         ))}
       </div>
        <Prerequisites courseCode={course.code} />
-       </>  
+       </>
       }
     </div>
   )

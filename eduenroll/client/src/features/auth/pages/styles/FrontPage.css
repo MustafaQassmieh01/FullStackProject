@@ -1,0 +1,19 @@
+```css
+.form-container {
+  transition: opacity 0.3s ease-in-out;
+  opacity: 1;
+}
+
+.form-container:hover {
+  opacity: 0.95;
+}
+
+.form-wrapper {
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.form-wrapper:hover {
+  /* Even shadow on all sides */
+  box-shadow: 0 0 15px 4px rgba(13, 148, 136, 0.4);
+}
+```

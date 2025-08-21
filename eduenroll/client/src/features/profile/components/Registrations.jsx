@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 function Registrations(){
     const [registrations, setRegistrations] = useState([]);
-    
+
     useEffect(() => {
         async function fetchRegistrations() {
             try {
@@ -30,7 +30,7 @@ function Registrations(){
 
 function RegistrationCard(registration){
     return (
-        
+
         <div className="registration-card w-9 border p-4 rounded shadow-md mb-4">
             <h3 className="text-red-400 self-start">Registration ID: {registration.registration_id}</h3>
             <div className="mb-2">
@@ -38,7 +38,7 @@ function RegistrationCard(registration){
             </div>
             <div className="mb-2 text-green-400">
                 <strong>Status:</strong> {registration.status}
-            </div>    
+            </div>
         </div>
     )
 }

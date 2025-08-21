@@ -1,20 +1,20 @@
 import React from 'react';
 import CourseDisplay from '../components/CourseCards';
-import Head  from '../../../core/components/PageHeader';
 import NavColumn from '../../../core/components/SideBar';
-import Footer from '../../../core/components/Footer';
-function HomePage() {
-    return (
 
-        <div className="home-page bg-gray-100 min-h-screen">
-            <Head />
-            
-            <div className="content-container flex p-6 max-w-7xl mx-auto">
-                <NavColumn role='user' />
-                <CourseDisplay />
-            </div>
-            <Footer />
+function HomePage() {
+  return (
+    <div className="home-page bg-gradient-to-b from-gray-100 to-gray-200 min-h-screen flex flex-col">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="py-4">
+          <NavColumn role="user" className="w-full" />
         </div>
-    );
+        <div className="py-4">
+          <CourseDisplay className="w-full" />
+        </div>
+      </div>
+    </div>
+  );
 }
+
 export default HomePage;

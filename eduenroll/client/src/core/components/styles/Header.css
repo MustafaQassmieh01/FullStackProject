@@ -1,0 +1,30 @@
+.page-header {
+  background: linear-gradient(270deg, #000000, #0d9488, #14b8a6);
+  background-size: 600% 600%;
+  animation: gradientMove 15s ease infinite;
+  color: white;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animated-text-gradient {
+  background: linear-gradient(270deg, #ffffff, #14f1d6);
+  background-size: 600% 600%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textGradientMove 8s ease infinite;
+}
+
+@keyframes textGradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.page-header p {
+  color: white;
+}
