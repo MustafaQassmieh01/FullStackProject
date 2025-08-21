@@ -1,9 +1,9 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import logger from 'morgan';
-import cors from 'cors';
 import router from './api/routes/mainRouter.js';
 import connection from './config/connection.js';
+import cookieParser from 'cookie-parser';
 
 
 export const app = express();
@@ -15,6 +15,7 @@ console.log(process.env.PORT);
 
 connection();
 app.use(express.json());
+app.use(cookieParser());
 app.use('/api', router);
 app.use(logger('dev', { immediate: true }));
 const port = process.env.PORT;
