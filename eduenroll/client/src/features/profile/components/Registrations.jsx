@@ -7,8 +7,8 @@ function Registrations(){
     useEffect(() => {
         async function fetchRegistrations() {
             try {
-                const data = await userApi.getRegistrations();
-                setRegistrations(data);
+                const response = await userApi.getRegistrations();
+                setRegistrations(response.data);
             } catch (error) {
                 console.error('Error fetching registrations:', error);
             }
@@ -31,15 +31,17 @@ function Registrations(){
 function RegistrationCard(registration){
     return (
         
-        <div className="registration-card w-9 border p-4 rounded shadow-md mb-4">
-            <h3 className="text-red-400 self-start">Registration ID: {registration.registration_id}</h3>
-            <div className="mb-2">
-                <strong>Course:</strong> {registration.course_code.title}
-            </div>
-            <div className="mb-2 text-green-400">
-                <strong>Status:</strong> {registration.status}
-            </div>    
-        </div>
+    <div className="registration-card w-96 border-2 border-indigo-500 p-6 rounded-xl shadow-lg mb-6 bg-gradient-to-r from-indigo-50 to-white hover:shadow-xl transition">
+    <h3 className="text-indigo-600 font-bold text-lg mb-3">
+        ✨ Registration ID: {registration.registration_id}
+    </h3>
+    <div className="mb-3 text-gray-800">
+        <strong>📘 Course:</strong> {registration.course_code.title}
+    </div>
+    <div className="mb-2 text-green-600 font-semibold">
+        <strong>✅ Status:</strong> {registration.status}
+    </div>    
+    </div>
     )
 }
 /* registration_id: {type: String, required: true, unique: true},
