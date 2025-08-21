@@ -15,12 +15,12 @@ export const users ={
                 }
             )
             const resJson = await res.json();
+
             if (!res.ok) {
                 throw new Error('Network response was not ok' + res.statusText);
             }
-
             setToken(resJson.accessToken); // Store the token in local storage or context
-
+            localStorage.setItem('user', JSON.stringify(resJson.data)); // Store user data in local storage
 
             switch(res.status) {
                 case 200:

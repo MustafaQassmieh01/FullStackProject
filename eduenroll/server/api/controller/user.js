@@ -221,7 +221,7 @@ const UserController = {
             delete userResponse.password_hash; // Remove sensitive data
             res.cookie("refreshToken", refresh, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+                secure: true, // Use secure cookies in production
                 sameSite: 'strict', // Prevent CSRF attacks
                 maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
                 path: '/api' // Set path to restrict cookie to this endpoint

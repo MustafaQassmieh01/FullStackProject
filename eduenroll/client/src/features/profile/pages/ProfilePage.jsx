@@ -24,33 +24,17 @@ function ProfilePage() {
         {/* Avatar */}
         <div className="flex flex-col items-center">
           <img
-            src={user.avatar}
+            src={user._id}
             alt={user.name}
             className="w-24 h-24 rounded-full border-4 border-indigo-500"
           />
-          <h2 className="mt-4 text-2xl font-bold text-gray-800">{user.name}</h2>
-          <p className="text-gray-500">{user.title}</p>
+          <h2 className="mt-4 text-2xl font-bold text-gray-800">role: {user.admin}</h2>
+          <p className="text-gray-500">{user.username}</p>
         </div>
 
         {/* Bio */}
         <div className="mt-4 text-center text-gray-600">
           <Clock />
-        </div>
-
-        {/* Stats */}
-        <div className="mt-6 grid grid-cols-3 text-center">
-          <div>
-            <p className="text-lg font-bold">{user.stats.followers}</p>
-            <p className="text-gray-500 text-sm">Followers</p>
-          </div>
-          <div>
-            <p className="text-lg font-bold">{user.stats.following}</p>
-            <p className="text-gray-500 text-sm">Following</p>
-          </div>
-          <div>
-            <p className="text-lg font-bold">{user.stats.posts}</p>
-            <p className="text-gray-500 text-sm">Posts</p>
-          </div>
         </div>
 
         {/* Action Button */}
