@@ -7,8 +7,8 @@ function Registrations(){
     useEffect(() => {
         async function fetchRegistrations() {
             try {
-                const data = await userApi.getRegistrations();
-                setRegistrations(data);
+                const response = await userApi.getRegistrations();
+                setRegistrations(response.data);
             } catch (error) {
                 console.error('Error fetching registrations:', error);
             }
@@ -31,15 +31,26 @@ function Registrations(){
 function RegistrationCard(registration){
     return (
 
-        <div className="registration-card w-9 border p-4 rounded shadow-md mb-4">
-            <h3 className="text-red-400 self-start">Registration ID: {registration.registration_id}</h3>
-            <div className="mb-2">
-                <strong>Course:</strong> {registration.course_code.title}
-            </div>
-            <div className="mb-2 text-green-400">
-                <strong>Status:</strong> {registration.status}
-            </div>
+    <div className="registration-card w-96 border border-gray-200 p-6 rounded-xl shadow-lg mb-6 transform transition duration-300 hover:scale-105 hover:shadow-2xl bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50">
+        <h3 className="text-xl font-bold text-purple-600 mb-3">Registration ID: {registration.registration_id}</h3>
+        
+        <div className="mb-2">
+            <strong className="text-gray-700">Course:</strong> 
+            <span className="ml-2 text-indigo-700 font-medium">{registration.course_code.title}</span>
         </div>
+
+        <div className={`mb-2 font-semibold ${
+            registration.status === "approved" ? "text-green-500" :
+            registration.status === "pending" ? "text-yellow-500" :
+            "text-red-500"
+        }`}>
+            <strong>Status:</strong> <span className="ml-2">{registration.status}</span>
+        </div>
+
+        <button className="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg shadow hover:bg-purple-700 hover:shadow-md transition">
+            View Details
+        </button>
+    </div>
     )
 }
 /* registration_id: {type: String, required: true, unique: true},
