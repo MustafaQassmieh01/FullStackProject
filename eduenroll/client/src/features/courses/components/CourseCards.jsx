@@ -92,6 +92,7 @@ function CourseCard({course}){
   ];
 // const code = course.code;
   const handleClick = (courseCode)=>{
+    console.log('Registering for course:', courseCode);
     userApi.register(courseCode);
   }
   return (
