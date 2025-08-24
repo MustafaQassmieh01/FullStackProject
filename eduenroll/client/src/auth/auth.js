@@ -20,22 +20,19 @@ export const authFetch = async (url,options = {}) => {
 
     if (response.status === 401){
         try{
-            await requestToken();
-            const newToken = getToken();
-
+            const newToken = await requestToken();
             if (!newToken) throw new Error('401: Failed to refresh token');
             response = await fetch(url, buildFetchOptions(newToken));
-            localStorage.setItem('token', newToken);
 
         }catch (error) {
-            console.log('Error refreshing token:', response.message,response);
-            console.error('Error refreshing token:', response.message,response);
+            console.log('Error refreshing token:', error.message, response);
+            console.error('Error refreshing token:', error.message, response);
             throw error;
         }
         
         if(!response.ok){
             const errorText = await response.text()
-            throw new Error(`${response.status}:${errorText || response.message}`)
+            throw new Error(`${response.status} - ${errorText || response.statusText}`)
         }
         
         

@@ -34,6 +34,7 @@ const tokenControl = {
     },
 
     refreshAccessToken: (req, res) => {
+        console.log("Refreshing access token, cookies: ", req.cookies);
         const refreshToken = req.cookies.refreshToken ; // refactor this to only cokies for production
         if (!refreshToken) {
             return res.status(401).json({ error: 'Refresh token is required' });
