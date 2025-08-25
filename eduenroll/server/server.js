@@ -18,7 +18,7 @@ const allowedOrigins = [
   'https://your-frontend-url.netlify.app',         // deployed frontend URL
   'https://your-frontend-url.vercel.app',          // if using Vercel
   'https://eduenrollpage.onrender.com',          // if serving frontend from backend
-  'https://eduenrollpage.onrender.com'
+  'https://eduenrollpage.onrender.com/'
 ];
 
 app.use(cors({
