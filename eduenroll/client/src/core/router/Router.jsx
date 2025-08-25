@@ -30,8 +30,9 @@ function Router() {
             </Route>
 
             {/* Catch-all route for unregistered URLs */}
-            <Route path="*" element={<NotFound />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
+            <Route path="*" element={<NotFound />} />
+            
         </Routes>
     );
 }
