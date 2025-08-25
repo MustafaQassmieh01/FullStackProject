@@ -26,7 +26,7 @@ function SignupForm() {
       const response = await userApi.signup(userData);
       const { user } = response.data;
       setUser(user);
-      navigate('/dashboard');
+      navigate('/home');
     } catch (err) {
       console.error('Signup failed:', err);
       setError('Signup failed. Please try again.');
