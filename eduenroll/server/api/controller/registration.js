@@ -283,11 +283,11 @@ const RegistrationController = {
      * this should be used by the user (will keep it for both it might be used by admin or user)
      * @returns {Object} - The response object containing the result of the deletion.
      */
-    deleteRegistration: async (req, res) => {
+    deleteUserRegistration: async (req, res) => {
         try {
             const { id } = req.params;
-
-            const deletedRegistration = await Registration.findByIdAndDelete(id);
+            const username = req.user.username; // Assuming the user ID is stored in the token
+            const deletedRegistration = await Registration.findOneAndDelete({ registration_id: id, username: username });
             if (!deletedRegistration) {
                 return res.status(404).json({
                     success: false,

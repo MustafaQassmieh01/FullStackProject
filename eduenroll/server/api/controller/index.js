@@ -16,7 +16,7 @@ const Controller = {
     getCourseRegistrations: RegistrationController.getCourseRegistrations,
     editRegistration: RegistrationController.editRegistration,
     changeStatus: RegistrationController.changeStatus,
-    deleteRegistration: RegistrationController.deleteRegistration,
+    deleteRegistration: RegistrationController.deleteUserRegistration,
     createPrerequisite: PrerequisiteController.createPrerequisite,
     getAllPrerequisites: PrerequisiteController.getAllPrerequisites,  //I do need one specific to course
     getCoursePrerequisites: PrerequisiteController.getCoursePrerequisites,
@@ -27,7 +27,7 @@ const Controller = {
     updateUser: UserController.updateUser,
     deleteUser: UserController.deleteUser,
     loginUser: UserController.login,
-    getAllUsers: UserController.getAllUsers
-
+    getAllUsers: UserController.getAllUsers,
+    changePassword: UserController.changePassword
 }
 export default Controller;

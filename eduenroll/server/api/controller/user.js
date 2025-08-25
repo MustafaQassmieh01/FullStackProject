@@ -210,13 +210,8 @@ const UserController = {
                 email: user.email,
                 admin: user.admin
             };
-
-            // generate a token (for simplicity, not implemented here)
-            // const token = jwt.sign({ id: user._id, username: user.username, admin:user.admin }, process.env.JWT_SECRET); // add expiration time in production
             const Access =tokenControl.generateAccessToken(userCard)
             const refresh = tokenControl.generateRefreshToken(userCard);
-
-
             const userResponse = user.toObject();
             delete userResponse.password_hash; // Remove sensitive data
             res.cookie("refreshToken", refresh, {
@@ -234,7 +229,65 @@ const UserController = {
         }catch (error) {
             handleMongooseError(error, res);
         }
-    }    
+    },
+    changePassword: async (req, res) => {
+        try {
+            const username = req.user.username;
+            const { oldPassword, newPassword } = req.body;
+            
+            console.log("Changing password for user:", username);
+            console.log(req.body)
+            if (!username || !oldPassword || !newPassword) {
+                return res.status(400).json({
+                    success: false,
+                    message: "All fields are required"
+                });
+            }
+
+            const user = await User.findOne({ username });
+            if (!user) {
+                return res.status(404).json({
+                    success: false,
+                    message: "User not found"
+                });
+            }
+            const isMatch = await bcrypt.compare(oldPassword, user.password_hash);
+            if (!isMatch) {
+                return res.status(401).json({
+                    success: false,
+                    message: "Invalid old password"
+                });
+            }
+            user.password_hash = await bcrypt.hash(newPassword, 10);
+            const userCard = {
+                username: user.username,
+                name: user.name,
+                email: user.email,
+                admin: user.admin
+            };
+
+            await user.save();
+            const Access =tokenControl.generateAccessToken(userCard)
+            const refresh = tokenControl.generateRefreshToken(userCard);
+            const userResponse = user.toObject();
+            delete userResponse.password_hash; // Remove sensitive data
+            res.cookie("refreshToken", refresh, {
+                httpOnly: true,
+                secure: true, // Use secure cookies in production
+                sameSite: 'strict', // Prevent CSRF attacks
+                maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+                path: '/api' // Set path to restrict cookie to this endpoint
+            }).status(200).json({
+                success: true,
+                message: "Password changed successfully",
+                data: userResponse,
+                accessToken: Access
+            });
+        } catch (error) {
+            handleMongooseError(error, res);
+        }
+    }
+
 };
 
 export default UserController;

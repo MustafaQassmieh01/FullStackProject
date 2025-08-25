@@ -1,4 +1,5 @@
 import {setToken} from '../auth/tokenStore.js';
+import { authFetch } from '../auth/auth.js';
 // because I can only use useUser and useToken inside a component or a custom hook, I will create a custom hook to use the user and token context
 // this feels stupid, but it's the only way to use the context inside an async function
 export const users ={
@@ -60,6 +61,22 @@ export const users ={
             throw error;
         }
     },
-
+   
+    changePassword : async (oldPassword, newPassword) => {
+        try {
+            const res = await authFetch('/api/users/password', {
+                method: 'PATCH',
+                body: JSON.stringify({ oldPassword, newPassword })
+            });
+            if (!res.ok) {
+                throw new Error('Network response was not ok > ' + res.status);
+            }
+            return await res.json();
+        } catch (error) {
+            console.error('Error changing password:', error);
+            throw error;
+        }
+    
+    }
     
 }

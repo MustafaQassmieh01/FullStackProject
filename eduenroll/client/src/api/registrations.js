@@ -61,4 +61,18 @@ export const registrations = {
             throw error;
         }
     },
+    removeRegistration: async (registrationId) => {
+        try {
+            const response = await authFetch(`/api/registrations/${registrationId}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) {
+                throw new Error(`Error removing registration ${registrationId}: ${response.statusText}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('Error removing registration:', error);
+            throw error;
+        }
+    }
 }

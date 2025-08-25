@@ -30,7 +30,7 @@ const tokenControl = {
     },
 
     generateAccessToken: (user) => {
-        return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1m' });
+        return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
     },
 
     refreshAccessToken: (req, res) => {

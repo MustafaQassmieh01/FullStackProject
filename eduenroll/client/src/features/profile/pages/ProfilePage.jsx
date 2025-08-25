@@ -2,13 +2,41 @@ import { useUser } from '../../../core/context/authProvider';
 import React, { useState, useEffect } from 'react';
 import Registrations from '../components/Registrations';
 import NavColumn from '../../../core/components/SideBar';
-
+import { setToken } from '../../../auth/tokenStore';
+import { userApi } from '../../../api/userApi';
+import ChangePasswordForm from '../components/ChangePasswordForm';
 function ProfilePage() {
-  const { user } = useUser();
+  const { user, setUser, clearUser } = useUser();
+  const [showChangePassword, setShowChangePassword] = useState(false);
+
   if (!user) {
     return <div className="text-center text-gray-500 text-sm py-8">User not found</div>;
   }
 
+  const handleLogout = () => {
+    clearUser();
+    window.location.reload();
+  };
+
+  const handleChangePassword = async (oldPassword, newPassword) => {
+    try {
+      // Ensure userApi.changePassword returns a parsed JSON object
+      const result = await userApi.changePassword(oldPassword, newPassword);
+      console.log('Password change result:', result);
+      if (!result.success) {
+        alert('Password change result: ' + (result.status?.message || 'Unknown error'));
+        return;
+      }
+      alert('Password changed successfully.');
+      const resJson = await result.json();
+      setToken(resJson.accessToken); // Store the token in local storage or context
+      localStorage.setItem('user', JSON.stringify(resJson.data));
+      setUser(resJson.data); // Update the user context with new user data
+      setShowChangePassword(false);
+    } catch (error) {
+      console.error('Error changing password: ' + error);
+    }
+  }
   return (
     <div className="profile-page bg-gradient-to-b from-gray-100 to-gray-200 min-h-screen flex flex-col">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6">
@@ -32,11 +60,22 @@ function ProfilePage() {
             <div className="mt-4 text-center text-gray-600 text-sm">
               <Clock />
             </div>
-            <div className="mt-6 flex justify-center">
-              <button className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 focus:ring-2 focus:ring-teal-500 focus:outline-none transition">
-                Edit Profile
+
+            <div className="mt-6 flex justify-center space-x-4">
+              <button
+                className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 focus:ring-2 focus:ring-teal-500 focus:outline-none transition"
+                onClick={() => setShowChangePassword(true)}
+              >
+                Change Password
+              </button>
+              <button
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:outline-none transition"
+                onClick={handleLogout}
+              >
+                Logout
               </button>
             </div>
+
             <div className="mt-8">
               <h3 className="text-xl font-semibold text-teal-600 mb-4">My Registrations</h3>
               <Registrations />
@@ -44,6 +83,20 @@ function ProfilePage() {
           </div>
         </div>
       </div>
+
+      {showChangePassword && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-md max-w-md w-full">
+            <ChangePasswordForm handleChangePass={handleChangePassword} />
+            <button
+              className="mt-4 w-full px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 focus:ring-2 focus:ring-gray-500 focus:outline-none transition"
+              onClick={() => setShowChangePassword(false)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

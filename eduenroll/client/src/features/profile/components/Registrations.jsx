@@ -32,6 +32,16 @@ function Registrations() {
 }
 
 function RegistrationCard(registration) {
+  const handleRemoveRegistration = async (registrationId) => {
+    try {
+      await userApi.removeRegistration(registrationId);
+      // Refresh the page to reflect the changes
+      window.location.reload();
+    } catch (error) {
+      console.error('Error removing registration:', error);
+    }
+  };
+
   return (
     <div className="registration-card w-full border border-teal-600 p-6 rounded-lg shadow-md bg-white">
       <h3 className="text-lg font-semibold text-teal-600 mb-3">Registration ID: {registration.registration_id}</h3>
@@ -45,6 +55,14 @@ function RegistrationCard(registration) {
         "text-red-600"
       }`}>
         <strong className="text-teal-600">Status:</strong> <span className="ml-2">{registration.status}</span>
+      </div>
+      <div className="mt-4 flex justify-end">
+        <button
+          className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-md shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition"
+          onClick={() => handleRemoveRegistration(registration.registration_id)}
+        >
+          Unregister
+        </button>
       </div>
     </div>
   );
