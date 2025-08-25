@@ -17,7 +17,8 @@ const allowedOrigins = [
   'http://localhost:5173',                         // Vite dev server
   'https://your-frontend-url.netlify.app',         // deployed frontend URL
   'https://your-frontend-url.vercel.app',          // if using Vercel
-  'https://eduenrollpage-dmp1.onrender.com',          // if serving frontend from backend
+  'https://eduenrollpage.onrender.com',          // if serving frontend from backend
+  'https://eduenrollpage.onrender.com'
 ];
 
 app.use(cors({
