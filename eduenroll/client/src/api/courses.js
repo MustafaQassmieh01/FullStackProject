@@ -3,7 +3,7 @@ import { authFetch } from "../auth/auth";
 export const courses= {
     getAllCourses:async()=>{
         try{ 
-            const response = await authFetch('/api/courses', {
+            const response = await authFetch('/courses', {
                 method: 'GET'
             });
             const data = await response.json();
@@ -15,7 +15,7 @@ export const courses= {
     },
     getCourseByCode: async (code) =>{
         try{
-            const response = await authFetch('/api/courses/' + code, {
+            const response = await authFetch('/courses/' + code, {
                 method: 'GET'
             });
             if (!response.ok) {
