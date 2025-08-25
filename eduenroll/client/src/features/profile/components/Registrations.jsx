@@ -36,6 +36,7 @@ function RegistrationCard(registration) {
     try {
       await userApi.removeRegistration(registrationId);
       // Refresh the page to reflect the changes
+      window.location.reload();
     } catch (error) {
       console.error('Error removing registration:', error);
     }
