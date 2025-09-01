@@ -67,12 +67,4 @@ function RegistrationCard(registration) {
     </div>
   );
 }
-/* registration_id: {type: String, required: true, unique: true},
-  username: {type: String, ref: "User", required: true},
-  course_code: {type: String,ref: "Course",required: true,},
-  status: {type: String, required: true,
-        enum: ["pending", "approved", "rejected"],
-        default: "pending"}
-});*/
-
 export default Registrations;

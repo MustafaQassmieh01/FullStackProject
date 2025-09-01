@@ -187,6 +187,12 @@ function Prerequisites({ courseCode }) {
     </div>
   );
 }
+function filterUnregistered(allCourses, registeredCourses) {
+  // Assuming both arrays contain objects with a unique ID (e.g., course_code)
+  const registeredIds = new Set(registeredCourses.map(c => c.course_code));
+
+  return allCourses.filter(course => !registeredIds.has(course.course_code));
+}
 
 function getValueFromPath(obj, path) {
   return path.split('.').reduce((o, p) => (o ? o[p] : undefined), obj);
