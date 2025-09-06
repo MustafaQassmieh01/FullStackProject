@@ -5,24 +5,31 @@ import {ChevronDownIcon, ChevronUpIcon }from '@heroicons/react/16/solid'
 
 
 function CourseDisplay() {
-  const [courses,setCourses] = useState([]);
-  useEffect(()=>{
-    async function fetchCourses(){
-      const data = await userApi.getAllCourses()
-      setCourses(data)
-    }
-    fetchCourses()
-  },[]);
-
 
   return (
     <div className="courses justify-self-center w-full max-w-3xl bg-white p-6 rounded-lg shadow-md border border-teal-600">
-      <CoursesMain courses={courses} />
+      <CoursesMain />
     </div>
   );
 }
 
-function CoursesMain({courses}) {
+function CoursesMain() {
+  const [courses,setCourses] = useState([]);
+  
+    async function fetchCourses(){
+      const [allCoursesResponse, registeredCoursesResponse] = await Promise.all([
+        userApi.getAllCourses(),
+        userApi.getRegistrations()
+      ]);
+      const data = await filterUnregistered(allCoursesResponse, registeredCoursesResponse);
+      setCourses(data)
+    }
+
+    useEffect(()=>{ 
+      fetchCourses()
+    },[]);
+    
+
   // so here i made headers
   const headers = [
   {id:1,KEY:'code', label:'Course Code'},
@@ -45,9 +52,9 @@ function CoursesMain({courses}) {
   function getSortedArray(array) {
   const sorted = [...array]; // shallow copy
   if (sort.direction === "asc") {
-    sorted.sort((a, b) => getValueFromPath(a, sort.keyToSort) > getValueFromPath(b, sort.keyToSort) ? 1 : -1);
+    sorted.sort((a, b) => getValueFromPath(a, sort.keyToSort) >= getValueFromPath(b, sort.keyToSort) ? 1 : -1);
   } else {
-    sorted.sort((a, b) => getValueFromPath(a, sort.keyToSort) > getValueFromPath(b, sort.keyToSort) ? -1 : 1);
+    sorted.sort((a, b) => getValueFromPath(a, sort.keyToSort) >= getValueFromPath(b, sort.keyToSort) ? -1 : 1);
   }
   return sorted;
 }
@@ -75,7 +82,7 @@ function CoursesMain({courses}) {
           <p className="text-gray-500 text-sm text-center">No courses available.</p>
         ) : (
           getSortedArray(courses).map((course) => (
-            <CourseCard key={course.code} course={course} />
+            <CourseCard key={course.code} course={course} refreshCourses={fetchCourses} />
           ))
         )}
       </div>
@@ -83,7 +90,8 @@ function CoursesMain({courses}) {
   );
 }
 
-function CourseCard({course}){
+
+function CourseCard({course, refreshCourses}){
   const [visible, setVisible] = useState(false)
   const mainHeaders = [
   { KEY: 'code', label: 'Course Code' },
@@ -96,9 +104,9 @@ function CourseCard({course}){
   { KEY: 'capacity', label: 'Capacity' }
   ];
 // const code = course.code;
-  const handleClick = (courseCode)=>{
-    console.log('Registering for course:', courseCode);
-    userApi.register(courseCode);
+  const handleClick = async (courseCode)=>{
+    await registerToCourse(courseCode);
+    await refreshCourses();
   }
   return (
     <div className="course-card bg-white border border-teal-600 p-4 rounded-lg shadow-md">
@@ -142,6 +150,17 @@ function CourseCard({course}){
   );
 }
 
+
+async function registerToCourse(courseCode) {
+  try {
+    await userApi.register(courseCode)
+    alert(`Successfully registered for course: ${courseCode}`);
+  } catch (error) {
+    console.error('Error registering for course:', error);
+  }
+
+}
+
 function Prerequisites({ courseCode }) {
   const [prereqs, setPrereqs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -149,7 +168,8 @@ function Prerequisites({ courseCode }) {
   useEffect(() => {
     async function fetchPrereqs() {
       try {
-        const data = await userApi.getPrerequisitesByCourseCode(courseCode);
+        const data = await userApi.getCoursePrerequisites(courseCode);
+        console.log('Fetched prerequisites:', data);
         setPrereqs(data);
       } catch (e) {
         console.log('CourseCards.Prerequisites > ', e);
@@ -187,12 +207,16 @@ function Prerequisites({ courseCode }) {
     </div>
   );
 }
-function filterUnregistered(allCourses, registeredCourses) {
-  // Assuming both arrays contain objects with a unique ID (e.g., course_code)
+
+
+function filterUnregistered(allCourses, registeredCoursesrResponse) {
+  const registeredCourses = registeredCoursesrResponse.data;
+  if (registeredCourses.length === 0) return allCourses;
   const registeredIds = new Set(registeredCourses.map(c => c.course_code));
 
-  return allCourses.filter(course => !registeredIds.has(course.course_code));
+  return allCourses.filter(course => !registeredIds.has(course.code));
 }
+
 
 function getValueFromPath(obj, path) {
   return path.split('.').reduce((o, p) => (o ? o[p] : undefined), obj);

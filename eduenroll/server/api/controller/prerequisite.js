@@ -186,8 +186,8 @@ const PrerequisiteController = {
      */
     getCoursePrerequisites: async (req, res) => {
         try {
-            const { course_code } = req.params;
-
+            const {course_code}  = req.params;
+            console.log('Fetching prerequisites for course code:', course_code);
             // Validate required fields
             if (!course_code) {
                 return res.status(400).json({
@@ -197,9 +197,8 @@ const PrerequisiteController = {
             }
 
             // Fetch prerequisites for the course
-            const prerequisites = await Prerequisite.find({ course_code })
-            .populate('prerequisite_code','code title');
-            
+            const prerequisites = await Prerequisite.find({ course_code });
+            console.log('Found prerequisites:', prerequisites);
             if (prerequisites.length === 0) {
                 return res.status(404).json({
                     success: false,

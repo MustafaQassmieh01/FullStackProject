@@ -165,16 +165,18 @@ const RegistrationController = {
                 });
             }
             const registrations = await Registration.find({ username: username }).populate();
-            if (registrations.length === 0) {
-                return res.status(404).json({
-                    success: false,
-                    message: "No registrations found for this user"
-                });
-            }
+            // if (registrations.length === 0) {
+            //     return res.status(404).json({
+            //         success: true,
+            //         message: "No registrations found for this user"
+            //     });
+            // }
+            console.log('Registrations for user', username, registrations);
             return res.status(200).json({
                 success: true,
                 data: registrations
             });
+
         } catch (error) {
             return handleMongooseError(error, res);
         }

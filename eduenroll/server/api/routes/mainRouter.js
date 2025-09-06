@@ -35,7 +35,7 @@ router.delete('/registrations/:id', tokenControl.authenticate(), Controller.dele
 // Prerequisite Routes
 router.post('/prerequisites', tokenControl.authenticate(true), Controller.createPrerequisite); // Admin only
 router.get('/prerequisites', tokenControl.authenticate(), Controller.getAllPrerequisites); // Authenticated
-router.get('/prerequisites/course/:courseId', tokenControl.authenticate(), Controller.getCoursePrerequisites); // Authenticated
+router.get('/prerequisites/course/:course_code', tokenControl.authenticate(), Controller.getCoursePrerequisites); // Authenticated
 router.put('/prerequisites/:id', tokenControl.authenticate(true), Controller.editPrerequisite); // Admin only
 router.delete('/prerequisites/:id', tokenControl.authenticate(true), Controller.deletePrerequisite); // Admin only
 

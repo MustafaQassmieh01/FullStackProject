@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route,Navigate } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectRoute';
 import PublicRoute from './components/PublicRoute';
 import {useUser} from '../context/authProvider'
@@ -16,7 +16,9 @@ function Router() {
     console.log('Router user:', user);
     return (
         <Routes>
-            
+            {/* Redirect '/' to '/frontpage' */}
+            <Route path="/" element={<Navigate to="/frontpage" />} />
+
             {/* Public routes */}
             <Route element={<PublicRoute />}>
                 <Route path="/frontpage" element={<FrontPage />} />
