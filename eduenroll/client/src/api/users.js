@@ -13,6 +13,7 @@ export const users ={
                     headers: {
                         'Content-Type': 'application/json'
                     },
+                    credentials: 'include', 
                     body: JSON.stringify({ username, password })
                 }
             )
@@ -23,6 +24,7 @@ export const users ={
             }
             setToken(resJson.accessToken); // Store the token in local storage or context
             localStorage.setItem('user', JSON.stringify(resJson.data)); // Store user data in local storage
+            console.log('Login response:', document.cookie);
 
             switch(res.status) {
                 case 200:

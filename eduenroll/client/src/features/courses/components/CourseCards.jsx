@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 // import { Assignment } from "../../../api/Assignments.js";
 import {userApi} from "../../../api/userApi"
 import {ChevronDownIcon, ChevronUpIcon }from '@heroicons/react/16/solid'
-
+import Prerequisites from "./Prerequesites";
 
 function CourseDisplay() {
 
@@ -161,53 +161,6 @@ async function registerToCourse(courseCode) {
 
 }
 
-function Prerequisites({ courseCode }) {
-  const [prereqs, setPrereqs] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchPrereqs() {
-      try {
-        const data = await userApi.getCoursePrerequisites(courseCode);
-        console.log('Fetched prerequisites:', data);
-        setPrereqs(data);
-      } catch (e) {
-        console.log('CourseCards.Prerequisites > ', e);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchPrereqs();
-  }, [courseCode]);
-
-  if (loading) {
-    return (
-      <div className="text-sm text-teal-600 font-medium flex items-center gap-2">
-        <p>Loading prerequisites...</p>
-        <div className="animate-spin h-4 w-4 border-2 border-teal-600 border-t-transparent rounded-full"></div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="mt-3">
-      <h4 className="text-sm font-semibold text-teal-600">Prerequisites</h4>
-      {prereqs.length === 0 ? (
-        <p className="text-sm text-gray-500">No prerequisites.</p>
-      ) : (
-        <ul className="list-disc ml-6 mt-1 text-sm text-gray-800">
-          {prereqs.map((requirement) => (
-            <li key={requirement.prerequisite_code.code || requirement.prerequisite_code}>
-              {requirement.prerequisite_code.title || requirement.prerequisite_code.code}
-              {requirement.description && <p className="text-sm text-gray-600">{requirement.description}</p>}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
-
 
 function filterUnregistered(allCourses, registeredCoursesrResponse) {
   const registeredCourses = registeredCoursesrResponse.data;
@@ -221,5 +174,6 @@ function filterUnregistered(allCourses, registeredCoursesrResponse) {
 function getValueFromPath(obj, path) {
   return path.split('.').reduce((o, p) => (o ? o[p] : undefined), obj);
 }
+
 
 export default CourseDisplay;
