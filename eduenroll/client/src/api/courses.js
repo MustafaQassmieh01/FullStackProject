@@ -13,6 +13,7 @@ export const courses= {
             throw error;
         }
     },
+    
     getCourseByCode: async (code) =>{
         try{
             const response = await authFetch('/courses/' + code, {
@@ -29,4 +30,22 @@ export const courses= {
         }
     },
 
+    editCourse: async (courseCode, updatedData) => {
+        try {
+            const response = await authFetch(`/courses/${courseCode}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedData)
+            });
+            if (!response.ok) {
+                throw new Error(`Error editing course ${courseCode}: ${response.statusText}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('Error editing course:', error);
+            throw error;
+        }
+    },
 }

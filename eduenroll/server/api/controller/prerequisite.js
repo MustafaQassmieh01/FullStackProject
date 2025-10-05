@@ -213,6 +213,7 @@ const PrerequisiteController = {
         } catch (error) {
             return handleMongooseError(error, res);
         }
-    }
+    },
+
 };
 export default PrerequisiteController;

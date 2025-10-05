@@ -304,7 +304,26 @@ const RegistrationController = {
         } catch (error) {
             return handleMongooseError(error, res);
         }
-    }
+    },
+
+    deleteRegistration: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const deletedRegistration = await Registration.findOneAndDelete({ registration_id: id });
+            if (!deletedRegistration) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Registration not found"
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                message: "Registration deleted successfully"
+            });
+        } catch (error) {
+            return handleMongooseError(error, res);
+        }
+    },
 };
 
 export default RegistrationController;

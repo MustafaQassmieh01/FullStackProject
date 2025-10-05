@@ -16,4 +16,34 @@ export const prerequisites = {
             throw error;
         }
     },
+    addPrerequisite: async (courseCode, prerequisiteCode) => {
+        try {
+            const response = await authFetch(`/prerequisites`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ courseCode, prerequisiteCode })
+            });
+            if (!response.ok) {
+                throw new Error(`Error adding prerequisite ${prerequisiteCode} to course ${courseCode}: ${response.statusText}`);
+            }
+        } catch (error) {
+            console.error('Error adding prerequisite:', error);
+            throw error;
+        }
+    },
+    deletePrerequisite: async ( prerequisiteCode) => {
+        try {
+            const response = await authFetch(`/prerequisites/${prerequisiteCode}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) {
+                throw new Error(`Error deleting prerequisite ${prerequisiteCode}: ${response.statusText}`);
+            }
+        } catch (error) {
+            console.error('Error deleting prerequisite:', error);
+            throw error;
+        }
+    },
 }

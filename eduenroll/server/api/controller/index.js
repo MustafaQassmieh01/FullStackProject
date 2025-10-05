@@ -17,6 +17,7 @@ const Controller = {
     editRegistration: RegistrationController.editRegistration,
     changeStatus: RegistrationController.changeStatus,
     deleteRegistration: RegistrationController.deleteUserRegistration,
+    deleteRegistrationAdmin: RegistrationController.deleteRegistration,
     createPrerequisite: PrerequisiteController.createPrerequisite,
     getAllPrerequisites: PrerequisiteController.getAllPrerequisites,  //I do need one specific to course
     getCoursePrerequisites: PrerequisiteController.getCoursePrerequisites,

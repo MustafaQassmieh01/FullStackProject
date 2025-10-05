@@ -1,6 +1,7 @@
 import {setToken} from '../auth/tokenStore.js';
 import { authFetch } from '../auth/auth.js';
 import BASE_URL from '../config.js';
+import { get } from 'mongoose';
 // because I can only use useUser and useToken inside a component or a custom hook, I will create a custom hook to use the user and token context
 // this feels stupid, but it's the only way to use the context inside an async function
 export const users ={
@@ -79,7 +80,50 @@ export const users ={
             console.error('Error changing password:', error);
             throw error;
         }
+
+    },
+
+    getUsers: async() => {
+        try {
+            const res = await authFetch('/users', {
+                method: 'GET'
+            });
+            if (!res.ok) {
+                throw new Error('Network response was not ok > ' + res.status);
+            }
+            return await res.json();
+        } catch (error) {
+            console.error('Error fetching users:', error);
+            throw error;
+        }
+    },
     
-    }
-    
+    deleteUser: async(userId) => {
+        try {
+            const res = await authFetch(`/users/${userId}`, {
+                method: 'DELETE'
+            });
+            if (!res.ok) {
+                throw new Error('Network response was not ok > ' + res.status);
+            }
+            return await res.json();
+        } catch (error) {
+            console.error('Error deleting user:', error);
+            throw error;
+        }
+    },
+    getUserById: async(userId) => {
+        try {
+            const res = await authFetch(`/users/${userId}`, {
+                method: 'GET'
+            });
+            if (!res.ok) {
+                throw new Error('Network response was not ok > ' + res.status);
+            }
+            return await res.json();
+        } catch (error) {
+            console.error('Error fetching user by ID:', error);
+            throw error;
+        }
+    },
 }

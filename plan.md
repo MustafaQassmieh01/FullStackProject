@@ -44,9 +44,9 @@ A web-based course registration system where students can register for courses a
 ### 📄 PHASE 4: Student Features
 **Goal:** Enable students to interact with courses.
 
-- [ ] View all available courses
-- [ ] Register for courses
-- [ ] View pending/approved course registrations
+- [x] View all available courses
+- [x] Register for courses
+- [x] View pending/approved course registrations
 - [ ] Course capacity and eligibility logic (if implemented)
 
 ---
@@ -64,8 +64,8 @@ A web-based course registration system where students can register for courses a
 ### 💄 PHASE 6: Frontend Polish
 **Goal:** Ensure a responsive and user-friendly experience.
 
-- [ ] Make UI responsive (media queries, Tailwind, etc.)
-- [ ] Add loading and error handling states
+- [x] Make UI responsive (media queries, Tailwind, etc.)
+- [x] Add loading and error handling states
 - [ ] Confirm navigation and UX flow
 
 ---
