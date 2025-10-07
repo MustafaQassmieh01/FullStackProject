@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Registrations from '../components/Registrations';
 import NavColumn from '../../../core/components/SideBar';
 import { setToken } from '../../../auth/tokenStore';
-import { userApi } from '../../../api/userApi';
+import { Api } from '../../../api/userApi';
 import ChangePasswordForm from '../components/ChangePasswordForm';
 function ProfilePage() {
   const { user, setUser, clearUser } = useUser();
@@ -20,8 +20,7 @@ function ProfilePage() {
 
   const handleChangePassword = async (oldPassword, newPassword) => {
     try {
-      // Ensure userApi.changePassword returns a parsed JSON object
-      const result = await userApi.changePassword(oldPassword, newPassword);
+      const result = await Api.auth.changePassword(oldPassword, newPassword);
       console.log('Password change result:', result);
       if (!result.success) {
         alert('Password change result: ' + (result.status?.message || 'Unknown error'));

@@ -1,4 +1,4 @@
-import { userApi } from '../../../api/userApi';
+import { Api } from '../../../api/userApi';
 import React, { useEffect, useState } from 'react';
 
 function Registrations() {
@@ -7,7 +7,7 @@ function Registrations() {
   useEffect(() => {
     async function fetchRegistrations() {
       try {
-        const response = await userApi.getRegistrations();
+        const response = await Api.User.registrations.list();
         setRegistrations(response.data);
       } catch (error) {
         console.error('Error fetching registrations:', error);
@@ -34,7 +34,7 @@ function Registrations() {
 function RegistrationCard(registration) {
   const handleRemoveRegistration = async (registrationId) => {
     try {
-      await userApi.removeRegistration(registrationId);
+      await Api.User.registrations.remove(registrationId);
       // Refresh the page to reflect the changes
       window.location.reload();
     } catch (error) {

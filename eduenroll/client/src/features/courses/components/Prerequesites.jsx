@@ -1,4 +1,4 @@
-import {userApi} from '../../../api/userApi';
+import {Api} from '../../../api/userApi';
 import { useEffect, useState } from 'react';
 
 
@@ -9,7 +9,7 @@ function Prerequisites({ courseCode }) {
   useEffect(() => {
     async function fetchPrereqs() {
       try {
-        const response = await userApi.getCoursePrerequisites(courseCode);
+        const response = await Api.User.courses.getPrerequisites(courseCode);
         console.log('API response for prerequisites:', response);
         const data = await Promise.all(response.map(prereqs => processPrerequisites(prereqs)));
         console.log('Fetched prerequisites:', data);
@@ -54,7 +54,7 @@ function Prerequisites({ courseCode }) {
 }
 async function processPrerequisites(prerequisite){
     try {   
-        const course = await userApi.getCourseByCode(prerequisite.course_code);
+        const course = await Api.User.courses.getByCode(prerequisite.course_code);
         const courseTitle = course.data.title || course.data.code;
         const additional = prerequisite.additional ? ` - ${prerequisite.additional}` : '';
     return { title: courseTitle, additional: additional };
