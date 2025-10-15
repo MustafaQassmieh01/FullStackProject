@@ -38,7 +38,7 @@ const RegistrationController = {
 
             const newRegistration = new Registration({
                 registration_id,
-                user_id,
+                username,
                 course_code,
                 status
             });
@@ -62,6 +62,7 @@ const RegistrationController = {
     registerForCourse: async (req, res) => {
         try{
             const { courseCode } = req.params;
+            console.log('Registering for course:', courseCode);
             const username = req.user.username; // Assuming the username is stored in the token
 
             if (!courseCode) {
@@ -74,6 +75,7 @@ const RegistrationController = {
 
             // Check if the user is already registered for this course
             const existingRegistration = await Registration.findOne({ username, course_code: courseCode });
+            
             if (existingRegistration) {
                 return res.status(400).json({
                     success: false,
@@ -82,12 +84,11 @@ const RegistrationController = {
             }
 
             const newRegistration = new Registration({
-                registration_id: `reg_${course_code}-${count + 1}`, // Generate a unique registration ID
+                registration_id: `reg_${courseCode}-${count + 1}`, // Generate a unique registration ID
                 username,
                 course_code: courseCode,
                 status: "pending" // Default status
             });
-
             await newRegistration.save();
             return res.status(201).json({
                 success: true,
@@ -95,6 +96,7 @@ const RegistrationController = {
                 data: newRegistration
             });
         }catch (error) {
+            console.log('Error creating registration:', error);
             return handleMongooseError(error, res);
         }
     },
@@ -163,16 +165,18 @@ const RegistrationController = {
                 });
             }
             const registrations = await Registration.find({ username: username }).populate();
-            if (registrations.length === 0) {
-                return res.status(404).json({
-                    success: false,
-                    message: "No registrations found for this user"
-                });
-            }
+            // if (registrations.length === 0) {
+            //     return res.status(404).json({
+            //         success: true,
+            //         message: "No registrations found for this user"
+            //     });
+            // }
+            console.log('Registrations for user', username, registrations);
             return res.status(200).json({
                 success: true,
                 data: registrations
             });
+
         } catch (error) {
             return handleMongooseError(error, res);
         }
@@ -281,11 +285,11 @@ const RegistrationController = {
      * this should be used by the user (will keep it for both it might be used by admin or user)
      * @returns {Object} - The response object containing the result of the deletion.
      */
-    deleteRegistration: async (req, res) => {
+    deleteUserRegistration: async (req, res) => {
         try {
             const { id } = req.params;
-
-            const deletedRegistration = await Registration.findByIdAndDelete(id);
+            const username = req.user.username; // Assuming the user ID is stored in the token
+            const deletedRegistration = await Registration.findOneAndDelete({ registration_id: id, username: username });
             if (!deletedRegistration) {
                 return res.status(404).json({
                     success: false,

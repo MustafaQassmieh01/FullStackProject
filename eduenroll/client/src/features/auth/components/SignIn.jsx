@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from '../../../core/context/authProvider.jsx';
-import { userApi } from '../../../api/userApi.js';
+import { useUser } from '../../../core/context/authProvider';
+import { userApi } from '../../../api/userApi';
 
 function LoginForm() {
   const navigate = useNavigate();
   const { setUser } = useUser();
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
   const handleLogin = async (username, password) => {
     setError(null);
     setLoading(true);
@@ -37,52 +39,59 @@ function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-green-300 via-green-100 to-white">
-      <div className="w-full max-w-md p-8 bg-white rounded-xl shadow-lg border border-gray-200">
-        <h2 className="text-2xl font-bold mb-6 text-center text-green-700">Login to your account</h2>
+    <div className="w-96 h-[28rem] flex flex-col items-center justify-center bg-white rounded-xl">
+      <h2 className="text-xl sm:text-2xl font-bold text-center text-teal-600 mb-4">
+        Login to your account
+      </h2>
 
-        {error && (
-          <div className="mb-4 text-red-500 text-sm text-center">
-            {error}
-          </div>
-        )}
+      {error && (
+        <div className="mb-4 text-black text-xs text-center">
+          {error}
+        </div>
+      )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label htmlFor="username" className="block text-sm font-semibold text-gray-700">
-              Username
-            </label>
-            <input
-              id="username"
-              name="username"
-              required
-              type="text"
-              className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
-            />
-          </div>
+      <form onSubmit={handleSubmit} className="w-full space-y-4 px-6">
+        <div>
+          <label htmlFor="username" className="block text-xs font-semibold text-black">
+            Username
+          </label>
+          <input
+            id="username"
+            name="username"
+            required
+            type="text"
+            className="mt-1 block w-full px-3 py-2 border border-teal-600 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm text-black"
+          />
+        </div>
 
-          <div>
-            <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
-              Password
-            </label>
-            <input
-              id="password"
-              name="password"
-              required
-              type="password"
-              className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
-            />
-          </div>
-
+        <div className="relative">
+          <label htmlFor="password" className="block text-xs font-semibold text-black">
+            Password
+          </label>
+          <input
+            id="password"
+            name="password"
+            required
+            type={showPassword ? 'text' : 'password'}
+            className="mt-1 block w-full px-3 py-2 border border-teal-600 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm text-black"
+          />
           <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition disabled:opacity-60"
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-7 text-xs text-teal-600 hover:text-teal-800"
           >
-            {loading ? 'Logging in...' : 'Login'}
+            {showPassword ? 'Hide' : 'Show'}
           </button>
-        </form>
-      </div>
+        </div>
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full bg-teal-600 text-white py-2 rounded-lg hover:bg-teal-700 transition disabled:opacity-60 text-sm"
+        >
+          {loading ? 'Logging in...' : 'Login'}
+        </button>
+      </form>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { setToken } from "./tokenStore";
+import BASE_URL from '../config';
 
 let isRefreshing = false;
 let refreshPromise = null;
@@ -9,7 +10,7 @@ export const requestToken = () => {
     }
 
     isRefreshing = true;
-    refreshPromise =  fetch('/api/token/refresh', {
+    refreshPromise =  fetch(`${BASE_URL}/token/refresh`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -22,8 +23,9 @@ export const requestToken = () => {
             throw new Error('Failed to refresh token');
         }
         const data = await res.json();
-        setToken(data.Token);
-        return data.Token;
+        console.log("New access token:", data.accessToken);
+        setToken(data.accessToken);
+        return data.accessToken;
     })
     .catch((error) => {
         console.error('Error refreshing token:', error);

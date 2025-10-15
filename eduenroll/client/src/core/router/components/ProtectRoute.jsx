@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { useUser } from '../context/authProvider';
+import { useUser } from '../../context/authProvider';
 
 
 
@@ -10,7 +10,7 @@ const ProtectedRoute = ({requiresAdmin= false}) => {
   
     if (!tokenExists()) {
         console.log('User not authenticated, redirecting to login');
-        return <Navigate to="/" replace />;
+        return <Navigate to="/frontPage" replace />;
     }
 
     if (requiresAdmin && !user.isAdmin) {

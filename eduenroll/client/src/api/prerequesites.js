@@ -3,7 +3,7 @@ import { authFetch } from "../auth/auth";
 export const prerequisites = {
     getPrerequisitesByCourseCode: async (courseCode) => {
         try{
-            const response = await authFetch(`/api/prerequisites/${courseCode}`, {
+            const response = await authFetch(`/prerequisites/course/${courseCode}`, {
                 method: 'GET'
             });
             if (!response.ok) {

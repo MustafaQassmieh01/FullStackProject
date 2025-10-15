@@ -1,5 +1,6 @@
 import {getToken} from './tokenStore';
 import { requestToken } from './refresher';
+import BASE_URL from '../config';
 
 export const authFetch = async (url,options = {}) => {
 
@@ -16,25 +17,23 @@ export const authFetch = async (url,options = {}) => {
         }
     });
 
-    let response = await fetch(url, buildFetchOptions(token))
+    let response = await fetch(`${BASE_URL}${url}`, buildFetchOptions(token))
 
     if (response.status === 401){
         try{
-            await requestToken();
-            const newToken = getToken();
-            localStorage.setItem('token', newToken);
-
+            const newToken = await requestToken();
             if (!newToken) throw new Error('401: Failed to refresh token');
-            response = await fetch(url, buildFetchOptions(newToken));
+            response = await fetch(`${BASE_URL}${url}`, buildFetchOptions(newToken));
 
         }catch (error) {
-            console.error('Error refreshing token:', error);
+            console.log('Error refreshing token:', error.message, response);
+            console.error('Error refreshing token:', error.message, response);
             throw error;
         }
         
         if(!response.ok){
             const errorText = await response.text()
-            throw new Error(`${response.status}:${errorText || response.statusText}`)
+            throw new Error(`${response.status} - ${errorText || response.statusText}`)
         }
         
         

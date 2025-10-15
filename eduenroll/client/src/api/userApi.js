@@ -15,6 +15,8 @@ export const userApi = {
     getCoursePrerequisites: (courseCode) => prerequisites.getPrerequisitesByCourseCode(courseCode),
     getRegistrations: () => registrations.getRegistrationsByUser(),
     register: (courseCode) => registrations.addRegistration(courseCode),
+    removeRegistration: (registrationId) => registrations.removeRegistration(registrationId),
+    changePassword: (oldPassword, newPassword) => users.changePassword(oldPassword, newPassword)
 };
 
 // ==========================================

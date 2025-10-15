@@ -3,7 +3,7 @@ import { authFetch } from "../auth/auth";
 export const registrations = {
     addRegistration: async (courseCode) => {
         try {
-            const response = await authFetch(`/api/registrations/${courseCode}`, {
+            const response = await authFetch(`/registrations/${courseCode}`, {
                 method: 'POST'
             });
             if (!response.ok) {
@@ -17,7 +17,7 @@ export const registrations = {
     },
     getRegistrationsByUser: async () => {
         try {
-            const response = await authFetch(`/api/registrations/user`, {
+            const response = await authFetch(`/registrations/user`, {
                 method: 'GET'
             });
             if (!response.ok) {
@@ -31,7 +31,7 @@ export const registrations = {
     },
     getRegistrationsByCourse: async (courseCode) => {
         try {
-            const response = await authFetch(`/api/registrations/course/${courseCode}`, {
+            const response = await authFetch(`/registrations/course/${courseCode}`, {
                 method: 'GET'
             });
             if (!response.ok) {
@@ -45,7 +45,7 @@ export const registrations = {
     },
     editRegistration: async (registrationId, updatedData) => {
         try {
-            const response = await authFetch(`/api/registrations/${registrationId}`, {
+            const response = await authFetch(`/registrations/${registrationId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -61,4 +61,18 @@ export const registrations = {
             throw error;
         }
     },
+    removeRegistration: async (registrationId) => {
+        try {
+            const response = await authFetch(`/registrations/${registrationId}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) {
+                throw new Error(`Error removing registration ${registrationId}: ${response.statusText}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('Error removing registration:', error);
+            throw error;
+        }
+    }
 }

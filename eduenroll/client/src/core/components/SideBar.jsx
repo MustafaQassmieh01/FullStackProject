@@ -1,75 +1,30 @@
 import React from 'react';
-import {useState} from 'react'
-import {
-  IdentificationIcon,
-  InformationCircleIcon,
-  UserGroupIcon,
-  Cog6ToothIcon,
-  HomeIcon,
-  Bars4Icon
-} from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
 
-function NavColumn({role}){
-    const [visible, setVisible] = useState(false);
-    const onClick = () =>{setVisible(!visible)}
-    const navigate = useNavigate();
+function NavColumn({ role }) {
+  const navigate = useNavigate();
 
-    const links = {
-        admin: [
-            {
-            name: 'Dashboard',
-            icon: <HomeIcon className="w-6 h-6" />,
-            route: '/admin/dashboard',
-            },
-            {
-            name: 'Users',
-            icon: <UserGroupIcon className="w-6 h-6" />,
-            route: '/admin/users',
-            },
-        ],
-        user: [
-            {
-            name: 'Profile',
-            icon: <IdentificationIcon className="w-6 h-6" />,
-            route: '/profile',
-            },
-            {
-            name: 'about',
-            icon: <InformationCircleIcon className="w-6 h-6" />,
-            route: '/about',
-            },
-        ],
-    };
+  const links = [
+    { name: 'Homepage', route: '/home' },
+    { name: 'About', route: '/about' },
+    { name: 'Profile', route: '/profile' },
+  ];
 
-    const navLinks = links[role] || [];
-    return (
-        <div className="nav-column bg-gray-100 p-4 rounded-lg shadow-md">
-            <div
-            onClick={onClick}
-            className='w-12 h-12 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 cursor-pointer transition'
-            >
-                <Bars4Icon
-                className="w-6 h-6 text-gray-800"
-                />
-            </div>
-            {/* Optional: show children or menu if visible */}
-            {visible && (
-            <div className="mt-4 space-y-2">
-               {
-                navLinks.map(link => (
-                <div key={link.name}>
-                    <span 
-                        className="flex items-center space-x-2">
-                        {link.icon}
-                    </span>
-                    <a onClick={()=>{navigate(link.route)}} className='cursor-pointer'>{link.name}</a>
-                </div> 
-                ))}
-            </div>
-            )}
-        </div>
-    )
-
+  return (
+    <div className="bg-white border-b border-teal-600 py-4 px-6 flex justify-center items-center w-full">
+      <div className="flex gap-6">
+        {links.map((link) => (
+          <a
+            key={link.name}
+            onClick={() => navigate(link.route)}
+            className="text-sm sm:text-base font-medium text-teal-600 hover:text-teal-800 cursor-pointer transition"
+          >
+            {link.name}
+          </a>
+        ))}
+      </div>
+    </div>
+  );
 }
+
 export default NavColumn;
