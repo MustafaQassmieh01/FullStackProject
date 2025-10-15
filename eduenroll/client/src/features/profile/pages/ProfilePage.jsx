@@ -37,22 +37,6 @@ function ProfilePage() {
           <Clock />
         </div>
 
-        {/* Stats */}
-        <div className="mt-6 grid grid-cols-3 text-center">
-          <div>
-            <p className="text-lg font-bold">{user.stats.followers}</p>
-            <p className="text-gray-500 text-sm">Followers</p>
-          </div>
-          <div>
-            <p className="text-lg font-bold">{user.stats.following}</p>
-            <p className="text-gray-500 text-sm">Following</p>
-          </div>
-          <div>
-            <p className="text-lg font-bold">{user.stats.posts}</p>
-            <p className="text-gray-500 text-sm">Posts</p>
-          </div>
-        </div>
-
         {/* Action Button */}
         <div className="mt-6 flex justify-center">
           <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">

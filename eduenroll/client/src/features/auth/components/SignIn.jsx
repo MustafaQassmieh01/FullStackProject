@@ -15,6 +15,7 @@ function LoginForm() {
       const response = await userApi.login(username, password);
       const user = response.data;
       setUser(user);
+      localStorage.setItem('user', JSON.stringify(user)); // Store user data in local storage
       navigate('/home');
     } catch (err) {
       const apiError = err?.response?.data?.message;
