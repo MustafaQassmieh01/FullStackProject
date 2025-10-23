@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Api } from "../../../../src/api/userApi";
 import CircleProgress from "./CircleProgress";
 
@@ -13,19 +13,27 @@ const RegistrationDisplay = () => {
       try {
         const registrationsData = await Api.admin.registrations.getAll();
         setRegistrations(registrationsData || []);
-      } catch {
-        // Optionally handle error
+      } catch (error) {
+        console.error("Failed to fetch registrations:", error);
+        // Optionally handle error (e.g., show a message to the user)
       }
       setLoading(false);
     };
     fetchStats();
   }, []);
 
-  // Calculate statistics
-  const numRegistrations = registrations.length;
-  const accepted = registrations.filter(r => r.status === "accepted").length;
-  const waiting = registrations.filter(r => r.status === "waiting").length;
-  const rejected = registrations.filter(r => r.status === "rejected").length;
+  // Calculate statistics defensively. Use useMemo so we only compute when registrations changes.
+  const { numRegistrations, accepted, waiting, rejected } = useMemo(() => {
+    if (!Array.isArray(registrations)) {
+      console.warn('RegistrationDisplay: expected registrations to be an array but got:', registrations);
+      return { numRegistrations: 0, accepted: 0, waiting: 0, rejected: 0 };
+    }
+    const num = registrations.length;
+    const acc = registrations.filter(r => r && r.status === "accepted").length;
+    const wait = registrations.filter(r => r && r.status === "waiting").length;
+    const rej = registrations.filter(r => r && r.status === "rejected").length;
+    return { numRegistrations: num, accepted: acc, waiting: wait, rejected: rej };
+  }, [registrations]);
 
   return (
     <div className="bg-white shadow-lg rounded-lg p-6 mb-6 w-full max-w-2xl mx-auto flex items-center gap-6 transition-transform duration-200 hover:scale-105 hover:shadow-xl">

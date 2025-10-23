@@ -12,6 +12,7 @@ export const Api = {
         auth: {
             login: users.login,
             signup: users.signup,
+            logout: users.logout,
             changePassword: users.changePassword
         },
         courses:{

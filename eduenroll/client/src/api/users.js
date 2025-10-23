@@ -1,7 +1,6 @@
 import {setToken} from '../auth/tokenStore.js';
 import { authFetch } from '../auth/auth.js';
 import BASE_URL from '../config.js';
-import { get } from 'mongoose';
 // because I can only use useUser and useToken inside a component or a custom hook, I will create a custom hook to use the user and token context
 // this feels stupid, but it's the only way to use the context inside an async function
 export const users ={
@@ -25,7 +24,7 @@ export const users ={
             }
             setToken(resJson.accessToken); // Store the token in local storage or context
             localStorage.setItem('user', JSON.stringify(resJson.data)); // Store user data in local storage
-            console.log('Login response:', document.cookie);
+            console.log('Login response:', resJson);
 
             switch(res.status) {
                 case 200:

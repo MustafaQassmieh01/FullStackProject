@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Api } from "../../../../src/api/userApi";
 import CircleProgress from "./CircleProgress";
 
@@ -25,10 +25,17 @@ const UserDisplay = () => {
   }, []);
 
   // Calculate statistics
-  const numUsers = users.length;
-  const avgAppliedCourses = numUsers ? (registrations.length / numUsers).toFixed(2) : 0;
-  const acceptedRegs = registrations.filter(r => r.status === "accepted");
-  const avgAcceptedCourses = numUsers ? (acceptedRegs.length / numUsers).toFixed(2) : 0;
+  const { numUsers, avgAppliedCourses, avgAcceptedCourses } = useMemo(() => {
+    if (!Array.isArray(users) || !Array.isArray(registrations)) {
+      console.warn('UserDisplay: expected users and registrations to be arrays but got:', users, registrations);
+      return { numUsers: 0, avgAppliedCourses: 0, avgAcceptedCourses: 0 };
+    }
+    const num = users.length;
+    const avgApplied = num ? (registrations.length / num).toFixed(2) : 0;
+    const accepted = registrations.filter(r => r.status === "accepted");
+    const avgAccepted = num ? (accepted.length / num).toFixed(2) : 0;
+    return { numUsers: num, avgAppliedCourses: avgApplied, avgAcceptedCourses: avgAccepted };
+  }, [users, registrations]);
 
   return (
     <div className="bg-white shadow-lg rounded-lg p-6 mb-6 w-full max-w-lg mx-auto flex items-center gap-6 transition-transform duration-200 hover:scale-105 hover:shadow-xl">

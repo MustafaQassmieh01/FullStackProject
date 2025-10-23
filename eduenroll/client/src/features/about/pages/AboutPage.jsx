@@ -1,12 +1,12 @@
 import React from 'react';
-import NavColumn from '../../../core/components/SideBar';
+import Nav from '../../../core/components/Nav';
 
 function AboutPage() {
   return (
     <div className="about-page bg-gradient-to-b from-gray-100 to-gray-200 min-h-screen flex flex-col">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6">
         <div className="py-4">
-          <NavColumn role="user" className="w-full" />
+          <Nav role="user" className="w-full" />
         </div>
         <div className="py-4">
           <div className="bg-white p-6 rounded-lg shadow-md border border-teal-600 max-w-3xl mx-auto">

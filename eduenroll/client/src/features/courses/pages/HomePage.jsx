@@ -1,13 +1,13 @@
 import React from 'react';
 import CourseDisplay from '../components/CourseCards';
-import NavColumn from '../../../core/components/SideBar';
+import Nav from '../../../core/components/Nav';
 
 function HomePage() {
   return (
     <div className="home-page bg-transparent flex flex-col">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6">
         <div className="py-2">
-          <NavColumn role="user" className="w-full" />
+          <Nav role="user" className="w-full" />
         </div>
         <div className="py-2">
           <CourseDisplay className="w-full" />

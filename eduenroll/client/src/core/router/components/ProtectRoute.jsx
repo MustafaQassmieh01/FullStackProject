@@ -5,15 +5,14 @@ import { useUser } from '../../context/authProvider';
 
 
 const ProtectedRoute = ({requiresAdmin= false}) => {
-    const {user } = useUser();
+    const { user } = useUser();
     console.log('ProtectedRoute user:', user);
   
     if (!tokenExists()) {
         console.log('User not authenticated, redirecting to login');
         return <Navigate to="/frontPage" replace />;
     }
-
-    if (requiresAdmin && !user.isAdmin) {
+    if (requiresAdmin && !user.admin) {
         console.log('User is not an admin, redirecting to unauthorized page');
         return <Navigate to="/unauthorized" replace />;
     }
