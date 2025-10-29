@@ -23,7 +23,7 @@ router.put('/courses/:id/capacity', tokenControl.authenticate(true), Controller.
 router.post('/registrations/:courseCode', tokenControl.authenticate(), Controller.registerForCourse); // Authenticated
 router.get('/registrations/user', tokenControl.authenticate(), Controller.getUserRegistrations); // Authenticated
 router.delete('/registrations/:id', tokenControl.authenticate(), Controller.deleteRegistration); // Authenticated
-r
+
 // i just figured out that with this being used by the client, they will likely be able to access other users' registrations
 // so we need to ensure that the user can only access their own registrations
 router.get('/registrations', tokenControl.authenticate(true), Controller.getAllRegistrations); // Admin only
