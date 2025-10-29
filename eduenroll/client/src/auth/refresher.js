@@ -1,10 +1,12 @@
 import { setToken } from "./tokenStore";
 import BASE_URL from '../config';
+import { Api } from "../api/userApi";
 
 let isRefreshing = false;
 let refreshPromise = null;
 
 export const requestToken = () => {
+    
     if (isRefreshing){
         return refreshPromise;
     }
@@ -29,6 +31,10 @@ export const requestToken = () => {
     })
     .catch((error) => {
         console.error('Error refreshing token:', error);
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/frontPage';
+        // Optionally, you can redirect the user to the login page or show a notification   
         throw error;
     })
     .finally(() => {

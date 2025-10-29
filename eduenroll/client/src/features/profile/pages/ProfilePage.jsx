@@ -1,10 +1,10 @@
 import { useUser } from '../../../core/context/authProvider';
 import React, { useState, useEffect } from 'react';
 import Registrations from '../components/Registrations';
-import NavColumn from '../../../core/components/SideBar';
 import { setToken } from '../../../auth/tokenStore';
-import { userApi } from '../../../api/userApi';
+import { Api } from '../../../api/userApi';
 import ChangePasswordForm from '../components/ChangePasswordForm';
+import Nav from '../../../core/components/Nav';
 function ProfilePage() {
   const { user, setUser, clearUser } = useUser();
   const [showChangePassword, setShowChangePassword] = useState(false);
@@ -20,8 +20,7 @@ function ProfilePage() {
 
   const handleChangePassword = async (oldPassword, newPassword) => {
     try {
-      // Ensure userApi.changePassword returns a parsed JSON object
-      const result = await userApi.changePassword(oldPassword, newPassword);
+      const result = await Api.auth.changePassword(oldPassword, newPassword);
       console.log('Password change result:', result);
       if (!result.success) {
         alert('Password change result: ' + (result.status?.message || 'Unknown error'));
@@ -41,7 +40,7 @@ function ProfilePage() {
     <div className="profile-page bg-gradient-to-b from-gray-100 to-gray-200 min-h-screen flex flex-col">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6">
         <div className="py-4">
-          <NavColumn role="user" className="w-full" />
+          <Nav role="user" className="w-full" />
         </div>
         <div className="py-4">
           <div className="bg-white p-6 rounded-lg shadow-md border border-teal-600 max-w-3xl mx-auto">

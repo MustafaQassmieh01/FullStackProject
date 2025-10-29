@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../../core/context/authProvider';
-import { userApi } from '../../../api/userApi';
+import { Api } from '../../../api/userApi';
 
 function SignupForm() {
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ function SignupForm() {
     const admin = formData.get('admin') === 'on';
     const userData = { username, name, email, password, admin };
     try {
-      const response = await userApi.signup(userData);
+      const response = await Api.User.auth.signup(userData);
       const { user } = response.data;
       setUser(user);
       navigate('/home');

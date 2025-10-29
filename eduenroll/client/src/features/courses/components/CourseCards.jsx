@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 // import { Assignment } from "../../../api/Assignments.js";
-import {userApi} from "../../../api/userApi"
+import {Api} from "../../../api/userApi"
 import {ChevronDownIcon, ChevronUpIcon }from '@heroicons/react/16/solid'
 import Prerequisites from "./Prerequesites";
 
@@ -18,8 +18,8 @@ function CoursesMain() {
   
     async function fetchCourses(){
       const [allCoursesResponse, registeredCoursesResponse] = await Promise.all([
-        userApi.getAllCourses(),
-        userApi.getRegistrations()
+        Api.User.courses.getAllCourses(),
+        Api.User.registrations.getRegistrations()
       ]);
       const data = await filterUnregistered(allCoursesResponse, registeredCoursesResponse);
       setCourses(data)
@@ -153,7 +153,7 @@ function CourseCard({course, refreshCourses}){
 
 async function registerToCourse(courseCode) {
   try {
-    await userApi.register(courseCode)
+    await Api.User.registrations.add(courseCode)
     alert(`Successfully registered for course: ${courseCode}`);
   } catch (error) {
     console.error('Error registering for course:', error);

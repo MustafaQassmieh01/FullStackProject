@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../../core/context/authProvider';
-import { userApi } from '../../../api/userApi';
+import { Api } from '../../../api/userApi';
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ function LoginForm() {
     setError(null);
     setLoading(true);
     try {
-      const response = await userApi.login(username, password);
+      const response = await Api.User.auth.login(username, password);
       const user = response.data;
       setUser(user);
       localStorage.setItem('user', JSON.stringify(user)); // Store user data in local storage
