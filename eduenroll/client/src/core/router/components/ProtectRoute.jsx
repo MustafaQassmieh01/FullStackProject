@@ -12,6 +12,10 @@ const ProtectedRoute = ({requiresAdmin= false}) => {
         console.log('User not authenticated, redirecting to login');
         return <Navigate to="/frontPage" replace />;
     }
+    if (user.admin && !requiresAdmin) {
+        console.log('User is admin, redirecting to admin dashboard');
+        return <Navigate to="/admin/dashboard" replace />;
+    }
     if (requiresAdmin && !user.admin) {
         console.log('User is not an admin, redirecting to unauthorized page');
         return <Navigate to="/unauthorized" replace />;

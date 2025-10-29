@@ -1,4 +1,5 @@
 import { authFetch } from "../auth/auth";
+import { parseResponse } from './response';
 
 export const registrations = {
     addRegistration: async (courseCode) => {
@@ -6,10 +7,7 @@ export const registrations = {
             const response = await authFetch(`/registrations/${courseCode}`, {
                 method: 'POST'
             });
-            if (!response.ok) {
-                throw new Error(`Error registering for course ${courseCode}: ${response.statusText}`);
-            }
-            return await response.json();
+            return await parseResponse(response);
         } catch (error) {
             console.error('Error adding registration:', error);
             throw error;
@@ -25,10 +23,7 @@ export const registrations = {
                 },
                 body: JSON.stringify({ userId, courseCode })
             });
-            if (!response.ok) {
-                throw new Error(`Error creating registration for user ${userId} in course ${courseCode}: ${response.statusText}`);
-            }
-            return await response.json();
+            return await parseResponse(response);
         } catch (error) {
             console.error('Error creating registration as admin:', error);
             throw error;
@@ -40,10 +35,7 @@ export const registrations = {
             const response = await authFetch(`/registrations/user`, {
                 method: 'GET'
             });
-            if (!response.ok) {
-                throw new Error(`Error fetching user registrations: ${response.statusText}`);
-            }
-            return await response.json();
+            return await parseResponse(response);
         } catch (error) {
             console.error('Error fetching registrations by user:', error);
             throw error;
@@ -55,10 +47,7 @@ export const registrations = {
             const response = await authFetch(`/registrations/course/${courseCode}`, {
                 method: 'GET'
             });
-            if (!response.ok) {
-                throw new Error(`Error fetching registrations for course ${courseCode}: ${response.statusText}`);
-            }
-            return await response.json();
+            return await parseResponse(response);
         } catch (error) {
             console.error('Error fetching registrations by course:', error);
             throw error;
@@ -74,10 +63,7 @@ export const registrations = {
                 },
                 body: JSON.stringify(updatedData)
             });
-            if (!response.ok) {
-                throw new Error(`Error editing registration ${registrationId}: ${response.statusText}`);
-            }
-            return await response.json();
+            return await parseResponse(response);
         } catch (error) {
             console.error('Error editing registration:', error);
             throw error;
@@ -93,9 +79,13 @@ export const registrations = {
                 },
                 body: JSON.stringify({ status: newStatus })
             });
-            if (!response.ok) {
-                throw new Error(`Error changing status of registration ${registrationId}: ${response.statusText}`);
+            const resJson = await response.json();
+            if (!response.ok || (resJson && resJson.success === false)) {
+                const err = new Error(resJson?.message || response.statusText || 'Error changing registration status');
+                err.payload = resJson;
+                throw err;
             }
+            return resJson.data;
         } catch (error) {
             console.error('Error changing registration status:', error);
             throw error;
@@ -107,10 +97,7 @@ export const registrations = {
             const response = await authFetch(`/registrations/${registrationId}`, {
                 method: 'DELETE'
             });
-            if (!response.ok) {
-                throw new Error(`Error removing registration ${registrationId}: ${response.statusText}`);
-            }
-            return await response.json();
+            return await parseResponse(response);
         } catch (error) {
             console.error('Error removing registration:', error);
             throw error;
@@ -122,9 +109,13 @@ export const registrations = {
             const response = await authFetch(`/registrations/${userId}/admin`, {
                 method: 'GET'
             });
-            if (!response.ok) {
-                throw new Error(`Error fetching registrations for user ${userId}: ${response.statusText}`);
+            const resJson = await response.json();
+            if (!response.ok || (resJson && resJson.success === false)) {
+                const err = new Error(resJson?.message || response.statusText || 'Error fetching registrations');
+                err.payload = resJson;
+                throw err;
             }
+            return resJson.data;
         } catch (error) {
             console.error('Error fetching registrations by user:', error);
             throw error;
@@ -136,10 +127,7 @@ export const registrations = {
             const response = await authFetch(`/registrations`, {
                 method: 'GET'
             });
-            if (!response.ok) {
-                throw new Error(`Error fetching all registrations: ${response.statusText}`);
-            }
-            return await response.json();
+            return await parseResponse(response);
         } catch (error) {
             console.error('Error fetching all registrations:', error);
             throw error;

@@ -11,6 +11,10 @@ import AboutPage from '../../features/about/pages/AboutPage';
 import Profile from '../../features/profile/pages/ProfilePage';
 import NotFound from '../components/NotFound';
 import AdminDashboard from '../../Admin/dashboard/pages/AdminDashboard';
+import UserManagement from '../../Admin/Users/pages/AdminUsers';
+import CourseManagement from '../../Admin/Courses/pages/AdminCourses';
+import RegistrationManagement from '../../Admin/Registrations/pages/AdminRegistrations';
+import AdminReports from '../../Admin/Reports/pages/AdminReports';
 
 function Router() {
     const user = useUser();
@@ -33,12 +37,12 @@ function Router() {
             </Route>
 
             {/* Admin routes */}
-            <Route element={<ProtectedRoute role="admin" />}>
+            <Route element={<ProtectedRoute requiresAdmin={true} />}>
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                {/* <Route path="/admin/users" element={<UserManagement />} />
+                <Route path="/admin/users" element={<UserManagement />} />
                 <Route path="/admin/courses" element={<CourseManagement />} />
                 <Route path="/admin/registrations" element={<RegistrationManagement />} />
-                <Route path="/admin/reports" element={<AdminReports />} /> */}
+                <Route path="/admin/reports" element={<AdminReports />} />
             </Route>
 
             {/* Catch-all route for unregistered URLs */}

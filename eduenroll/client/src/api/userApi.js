@@ -12,7 +12,6 @@ export const Api = {
         auth: {
             login: users.login,
             signup: users.signup,
-            logout: users.logout,
             changePassword: users.changePassword
         },
         courses:{
@@ -23,7 +22,7 @@ export const Api = {
         registrations:{
             list: registrations.getRegistrationsByUser,
             add: registrations.addRegistration,
-            remove: registrations.deleteRegistration
+            remove: registrations.removeRegistration
         },
     },
     admin:{

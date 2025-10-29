@@ -1,6 +1,7 @@
 import {setToken} from '../auth/tokenStore.js';
 import { authFetch } from '../auth/auth.js';
 import BASE_URL from '../config.js';
+import { parseResponse } from './response';
 // because I can only use useUser and useToken inside a component or a custom hook, I will create a custom hook to use the user and token context
 // this feels stupid, but it's the only way to use the context inside an async function
 export const users ={
@@ -17,26 +18,10 @@ export const users ={
                     body: JSON.stringify({ username, password })
                 }
             )
-            const resJson = await res.json();
-
-            if (!res.ok) {
-                throw new Error('Network response was not ok' + res.statusText);
-            }
+            const resJson = await parseResponse(res, { raw: true });
             setToken(resJson.accessToken); // Store the token in local storage or context
             localStorage.setItem('user', JSON.stringify(resJson.data)); // Store user data in local storage
-            console.log('Login response:', resJson);
-
-            switch(res.status) {
-                case 200:
-                    return resJson; // Return the user data on successful login
-                case 401:
-                    console.log(res.error.messsage);
-                    throw new Error('Invalid username or password');
-                case 403:
-                    throw new Error('Unauthorized access');
-                default:
-                    throw new Error('An error occurred while logging in');
-            }
+            return resJson; // Return full response (accessToken + data)
 
         }catch (error) {
             console.error('Login error:', error);
@@ -55,10 +40,7 @@ export const users ={
                
             });
             console.log('User data:', userData);
-            if (!res.ok) {
-                throw new Error('Network response was not ok > ' + res.status);
-            }
-            return await res.json();
+            return await parseResponse(res, { raw: true });
         } catch (error) {
             console.error('Error signing up:', error);
             throw error;
@@ -71,10 +53,7 @@ export const users ={
                 method: 'PATCH',
                 body: JSON.stringify({ oldPassword, newPassword })
             });
-            if (!res.ok) {
-                throw new Error('Network response was not ok > ' + res.status);
-            }
-            return await res.json();
+            return await parseResponse(res, { raw: true });
         } catch (error) {
             console.error('Error changing password:', error);
             throw error;
@@ -87,10 +66,7 @@ export const users ={
             const res = await authFetch('/users', {
                 method: 'GET'
             });
-            if (!res.ok) {
-                throw new Error('Network response was not ok > ' + res.status);
-            }
-            return await res.json();
+            return await parseResponse(res);
         } catch (error) {
             console.error('Error fetching users:', error);
             throw error;
@@ -102,10 +78,7 @@ export const users ={
             const res = await authFetch(`/users/${userId}`, {
                 method: 'DELETE'
             });
-            if (!res.ok) {
-                throw new Error('Network response was not ok > ' + res.status);
-            }
-            return await res.json();
+            return await parseResponse(res);
         } catch (error) {
             console.error('Error deleting user:', error);
             throw error;
@@ -116,10 +89,7 @@ export const users ={
             const res = await authFetch(`/users/${userId}`, {
                 method: 'GET'
             });
-            if (!res.ok) {
-                throw new Error('Network response was not ok > ' + res.status);
-            }
-            return await res.json();
+            return await parseResponse(res);
         } catch (error) {
             console.error('Error fetching user by ID:', error);
             throw error;
